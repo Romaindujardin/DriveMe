@@ -24,11 +24,11 @@ Une fois les modifications terminées, ils retournent au terminal et ajoutent le
 
 ### Valider les modifications :
 Ils effectuent une validation pour enregistrer les changements :
-"git commit -m "Ajout de nouveaux assets"  # Remplacer par un message descriptif"
+"git commit -m "Ajout de la page acceuil"  # Remplacer par un message descriptif"
 
 ### Pousser la branche vers GitHub :
 Ils poussent leurs changements sur la branche qu'ils ont créée :
-"git push origin asset  # "asset" est le nom de leur branche"
+"git push origin acceuil  # "asset" est le nom de leur branche"
 
 ### Créer une Pull Request :
 Après avoir poussé leurs modifications, ils doivent aller sur GitHub pour créer une Pull Request afin de fusionner leurs changements dans la branche main.
