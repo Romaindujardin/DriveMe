@@ -4,7 +4,7 @@
 ### Cloner le dépôt :
 Ils ouvrent un terminal (CMD, PowerShell, ou un terminal sur Mac).
 Ils exécutent la commande suivante pour cloner le dépôt :
-"git clone https://github.com/Project-Group-3D/Game3D.git](https://github.com/Romaindujardin/DriveMe.git)"
+"git clone https://github.com/Romaindujardin/DriveMe.git"
 Cela crée un dossier Game3D dans leur répertoire utilisateur, qui contient tous les fichiers du projet.
 
 ### Naviguer dans le dossier cloné :
