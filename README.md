@@ -13,7 +13,7 @@ Ils doivent se déplacer dans le dossier cloné :
 
 ### Créer une nouvelle branche :
 Ils créent une nouvelle branche pour travailler sur leurs modifications, par exemple pour ajouter des assets :
-"git checkout -b asset  # Ici, "asset" est le nom de la branche"
+"git checkout -b accueil  # Ici, "accueil" est le nom de la branche"
 
 ### Faire des modifications :
 Ils ouvrent Unity et effectuent les modifications nécessaires (ajouter des modèles, scripts, textures, etc.).
