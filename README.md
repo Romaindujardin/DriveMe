@@ -9,7 +9,7 @@ Cela crée un dossier Game3D dans leur répertoire utilisateur, qui contient tou
 
 ### Naviguer dans le dossier cloné :
 Ils doivent se déplacer dans le dossier cloné :
-"cd Game3D"
+"cd DriveMe"
 
 ### Créer une nouvelle branche :
 Ils créent une nouvelle branche pour travailler sur leurs modifications, par exemple pour ajouter des assets :
