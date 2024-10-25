@@ -14,7 +14,7 @@ Ils doivent se déplacer dans le dossier cloné :
 "cd DriveMe"
 
 ### (Optionnel) Mettre en place un environnement virtuel :
-"source django/bin/activate"
+"source venv/bin/activate"
 
 ### Installer les requirements :
 "pip install -r requirements.txt"
