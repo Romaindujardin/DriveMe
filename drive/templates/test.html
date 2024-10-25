@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Animation de Dossiers 3D</title>
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      overflow: hidden;
+      background-color: #f0f0f0;
+    }
+
+    .folder {
+      width: 100px;
+      height: 70px;
+      margin: 10px;
+      background-color: #ffeb3b;
+      position: absolute;
+      top: -100px;
+      left: calc(50% - 50px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: #333;
+      border-radius: 5px;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+      transform: rotate(0);
+      cursor: pointer;
+      animation: fall 1s ease forwards;
+    }
+
+    .folder:nth-child(1) { animation-delay: 0.2s; }
+    .folder:nth-child(2) { animation-delay: 0.5s; }
+    .folder:nth-child(3) { animation-delay: 0.8s; }
+
+    @keyframes fall {
+      from {
+        top: -100px;
+        transform: rotate(-20deg);
+      }
+      to {
+        top: 50%;
+        transform: rotate(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="folder" draggable="true">Dossier 1</div>
+  <div class="folder" draggable="true">Dossier 2</div>
+  <div class="folder" draggable="true">Dossier 3</div>
+
+  <script>
+    const folders = document.querySelectorAll('.folder');
+    let activeFolder = null;
+
+    folders.forEach(folder => {
+      folder.addEventListener('mousedown', (e) => {
+        activeFolder = folder;
+        const rect = folder.getBoundingClientRect();
+        folder.offsetX = e.clientX - rect.left;
+        folder.offsetY = e.clientY - rect.top;
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (activeFolder) {
+          activeFolder.style.left = `${e.clientX - activeFolder.offsetX}px`;
+          activeFolder.style.top = `${e.clientY - activeFolder.offsetY}px`;
+        }
+      });
+
+      document.addEventListener('mouseup', () => {
+        activeFolder = null;
+      });
+    });
+  </script>
+</body>
+</html>
