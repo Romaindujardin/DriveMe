@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from .forms import DocumentForm
-
+from .models import Document
 def logout_view(request):
     logout(request)  # Déconnecte l'utilisateur
     return redirect('home')  # Redirige vers la page d'accueil ou une autre page de ton choix
@@ -68,3 +68,15 @@ def upload_file(request):
 def main_view(request):
     return render(request, 'main.html')
 
+@login_required
+def document_list(request):
+    file_type = request.GET.get('type')  # Récupère le type de fichier depuis les paramètres de l'URL
+    user_id = request.user.id  # ID de l'utilisateur connecté
+
+    # Filtrer les documents par utilisateur et éventuellement par type de fichier
+    if file_type:
+        documents = Document.objects.filter(utilisateur=request.user, type_fichier=file_type).order_by('-date_ajout')
+    else:
+        documents = Document.objects.filter(utilisateur=request.user).order_by('-date_ajout')
+
+    return render(request, 'document_list.html', {'documents': documents})

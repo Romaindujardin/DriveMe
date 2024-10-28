@@ -11,6 +11,7 @@ urlpatterns = [
     path('home/', views.home_view, name='home'),
     path('main/', views.main_view, name='main'),  # Assure-toi d'avoir cette vue
     path('logout/', views.logout_view, name='logout'),
+    path('documents/', views.document_list, name='document_list'),
 ]
 
 if settings.DEBUG:
