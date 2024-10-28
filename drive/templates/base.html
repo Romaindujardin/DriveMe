@@ -1,0 +1,63 @@
+<!-- templates/base.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}DriveMe{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="left">
+            <a href="{% url 'home' %}">
+                <img src="{% static 'img/logo.png' %}" alt="Logo" style="vertical-align: middle; margin-right: 8px; width: 40px; height: 40px;">
+                Drive<span style="color: rgb(64, 115, 255);">Me</span>
+            </a>
+        </div>
+        <div class="right">
+            {% if user.is_authenticated %}
+                <!-- Affiche la photo de profil de l'utilisateur connecté -->
+                <div class="profile-menu">
+                    <img src="{{ user.profile.photo.url }}" alt="Photo de profil" class="profile-photo" onclick="toggleMenu()">
+                    <div id="dropdownMenu" class="dropdown-menu">
+                        <a href="{% url 'logout' %}">Déconnexion</a>
+                    </div>
+                </div>
+            {% else %}
+                <a href="{% url 'home' %}">Accueil</a>
+                <a href="{% url 'login' %}">Connexion</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Contenu principal -->
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 DriveMe. Tous droits réservés.</p>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById("dropdownMenu");
+            menu.style.display = menu.style.display === "block" ? "none" : "block";
+        }
+        
+        // Fermer le menu si on clique ailleurs sur la page
+        window.onclick = function(event) {
+            if (!event.target.matches('.profile-photo')) {
+                const menu = document.getElementById("dropdownMenu");
+                if (menu.style.display === "block") {
+                    menu.style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>

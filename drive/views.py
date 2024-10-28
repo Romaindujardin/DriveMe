@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from .forms import DocumentForm
 
 def logout_view(request):
     logout(request)  # Déconnecte l'utilisateur
@@ -46,6 +47,22 @@ def signin_view(request):
 
 def home_view(request):
     return render(request, 'home.html')
+
+def upload_file(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        file = request.FILES.get('file')
+
+        print("Titre du document:", title)
+        print("Fichier reçu:", file)
+
+        if title and file:
+            document = Document(title=title, file=file)
+            document.save()
+            print("Document enregistré avec succès !")
+        else:
+            print("Les données sont manquantes ou incorrectes.")
+    return render(request, 'add_document.html')
 
 @login_required  # Appliquer le décorateur ici
 def main_view(request):
