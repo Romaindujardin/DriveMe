@@ -21,5 +21,7 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('drive.urls')),  # Redirige les URLs vers l'application drive
+    path('accounts/', include('allauth.urls')),
+
 ]
 
