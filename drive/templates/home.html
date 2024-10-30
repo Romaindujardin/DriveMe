@@ -89,11 +89,43 @@
         <div class="section" style="padding: 10px;">
             <img src="{% static 'img/giphy.gif' %}" alt="Description of image" style="max-width: 30%; height: 30%;">
             <h1 style="margin-top: 20px; font-size: 86px;">Drive<span style="color: rgb(64, 115, 255);">Me</span></h1>
-            <div style="margin-top: 0px;">
-                <button style="padding: 10px 20px; margin: 5px;" onclick="window.location.href='{% url 'signin' %}'">Sign in</button>
-                <button style="padding: 10px 20px; margin: 5px;" onclick="window.location.href='{% url 'login' %}'">Login</button>
+            <div style="margin-top: -30px;">
+                <button type="submit" class="outline" onclick="window.location.href='{% url 'signin' %}'">Sign in</button>
+                <button type="submit" class="outline" onclick="window.location.href='{% url 'login' %}'">Login</button>
             </div>
         </div>
     </div>
 </body>
 </html>
+<style>
+    button {
+        cursor: pointer;
+        outline: none;
+          &.outline {
+              position: relative;
+              z-index: 3;
+              background: transparent;
+              color: #1172c4;
+              font-size: 14px;
+              border-color: #1172c4;
+              border-style: solid;
+              border-width: 2px;
+              border-radius: 22px;
+              padding: 10px 40px;
+              text-transform: uppercase;
+              transition: all 0.2s linear;
+              a {
+                  text-decoration: none;
+              }
+          }
+          &.outline:hover {
+              color: white;
+              background: #1172c4;
+              border-color: white;
+              transition: all 0.2s linear;
+          }
+          &.outline:active {
+              border-radius: 22px;
+          }
+      }
+</style>
