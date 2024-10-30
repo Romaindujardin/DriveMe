@@ -1,0 +1,10 @@
+<form method="POST">
+    {% csrf_token %}
+    <label for="nom">Nom du fichier :</label>
+    <input type="text" id="nom" name="nom" required>
+    <label for="type_fichier">Type de fichier :</label>
+    <input type="text" id="type_fichier" name="type_fichier" required>
+    <label for="taille_fichier">Taille du fichier :</label>
+    <input type="number" id="taille_fichier" name="taille_fichier" required>
+    <button type="submit">Télécharger</button>
+</form>

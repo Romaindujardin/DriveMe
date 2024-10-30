@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
+from .views import create_folder, delete_folder, rename_folder, upload_file
 
 
 urlpatterns = [
@@ -12,6 +13,10 @@ urlpatterns = [
     path('main/', views.main_view, name='main'),  # Assure-toi d'avoir cette vue
     path('logout/', views.logout_view, name='logout'),
     path('documents/', views.document_list, name='document_list'),
+    path('create-folder/', create_folder, name='create_folder'),
+    path('delete-folder/<int:folder_id>/', delete_folder, name='delete_folder'),
+    path('rename-folder/<int:folder_id>/', rename_folder, name='rename_folder'),
+    path('upload-file/<int:folder_id>/', upload_file, name='upload_file'),
 ]
 
 if settings.DEBUG:

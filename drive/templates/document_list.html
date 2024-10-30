@@ -8,6 +8,18 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}"> <!-- Ajoutez votre fichier CSS ici -->
 </head>
 <body>
+    <h1>Mes Dossiers</h1>
+    <a href="{% url 'create_folder' %}">Créer un dossier</a>
+        {% for dossier in dossiers %}
+        <div>
+            <h2>{{ dossier.nom }}</h2>
+            <a href="{% url 'upload_file' folder_id=dossier.id %}">Télécharger un fichier</a>
+            <a href="{% url 'rename_folder' folder_id=dossier.id %}">Renommer</a>
+        </div>
+        {% empty %}
+        <p>Aucun dossier trouvé.</p>
+        {% endfor %}
+            
     <h1>Mes Documents</h1>
     
     <div class="filter">

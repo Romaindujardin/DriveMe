@@ -1,11 +1,11 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from .forms import DocumentForm
-from .models import Document
+from .models import Dossier, Document
 def logout_view(request):
     logout(request)  # Déconnecte l'utilisateur
     return redirect('home')  # Redirige vers la page d'accueil ou une autre page de ton choix
@@ -71,12 +71,53 @@ def main_view(request):
 @login_required
 def document_list(request):
     file_type = request.GET.get('type')  # Récupère le type de fichier depuis les paramètres de l'URL
-    user_id = request.user.id  # ID de l'utilisateur connecté
 
     # Filtrer les documents par utilisateur et éventuellement par type de fichier
     if file_type:
         documents = Document.objects.filter(utilisateur=request.user, type_fichier=file_type).order_by('-date_ajout')
+        dossiers = Dossier.objects.filter(utilisateur=request.user)
     else:
         documents = Document.objects.filter(utilisateur=request.user).order_by('-date_ajout')
+        dossiers = Dossier.objects.filter(utilisateur=request.user)
 
-    return render(request, 'document_list.html', {'documents': documents})
+    return render(request, 'document_list.html', {'documents': documents} , {'dossiers': dossiers})
+
+def document_list(request):
+    user = request.user
+    dossiers = Dossier.objects.filter(utilisateur=user)
+    return render(request, 'document_list.html', {'dossiers': dossiers})
+
+@login_required
+def create_folder(request):
+    if request.method == 'POST':
+        nom = request.POST.get('nom')
+        Dossier.objects.create(nom=nom, utilisateur=request.user)
+        return redirect('document_list')  # Redirige vers la liste des documents
+    return render(request, 'create_folder.html')
+
+@login_required
+def delete_folder(request, folder_id):
+    folder = get_object_or_404(Dossier, id=folder_id, utilisateur=request.user)
+    folder.delete()
+    return redirect('document_list')
+
+@login_required
+def rename_folder(request, folder_id):
+    folder = get_object_or_404(Dossier, id=folder_id, utilisateur=request.user)
+    if request.method == 'POST':
+        new_name = request.POST.get('nom')
+        folder.nom = new_name
+        folder.save()
+        return redirect('document_list')
+    return render(request, 'rename_folder.html', {'folder': folder})
+
+@login_required
+def upload_file(request, folder_id):
+    folder = get_object_or_404(Dossier, id=folder_id, utilisateur=request.user)
+    if request.method == 'POST':
+        nom = request.POST.get('nom')
+        type_fichier = request.POST.get('type_fichier')
+        taille_fichier = request.POST.get('taille_fichier')  # Vous devrez gérer cela en fonction de votre upload
+        Document.objects.create(nom=nom, type_fichier=type_fichier, taille_fichier=taille_fichier, utilisateur=request.user, dossier=folder)
+        return redirect('document_list')
+    return render(request, 'upload_file.html', {'folder': folder})
