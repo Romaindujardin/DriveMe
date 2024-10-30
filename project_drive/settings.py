@@ -38,8 +38,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'drive',  # Ajoute ton app ici
+    'drive',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',  # Ajoute ton app ici
+    'allauth.socialaccount.providers.google',  # Ajoute le fournisseur Google
 ]
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -49,6 +54,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = "project_drive.urls"
@@ -127,5 +133,23 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGIN_URL = '/login/'  # Assure-toi que ce chemin correspond à ta vue de connexion
 
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+from decouple import config
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': config('GOOGLE_CLIENT_ID'),
+            'secret': config('GOOGLE_CLIENT_SECRET'),
+            'key': ''
+        }
+    }
+}
 
 
+LOGIN_REDIRECT_URL = 'main'  # Redirige vers la vue nommée 'home'
+SITE_ID = 1  # Ceci est nécessaire pour django-allauth
