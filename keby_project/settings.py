@@ -29,7 +29,9 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
-# Application definition
+# Application 
+
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -38,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'polls', #Ajouter mon application a la liste des applications du projet
 ]
 
 MIDDLEWARE = [

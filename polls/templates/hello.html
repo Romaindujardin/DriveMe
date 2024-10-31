@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html>
     <head>
         <title>Hello</title>
@@ -27,18 +28,21 @@
             }
 
             #file_zone{
-                border: 2px solid black;
-                border-radius:10px;
+                /* border: 2px solid black;
+                border-radius:10px; */
+                display: flex;
             }
 
             #file_zone2{
-                border: 2px solid black;
-               border-radius:10px;
+                /* border: 2px solid black;
+                border-radius:10px; */
+                display : flex;
             }
 
             #file_zone3{
-                border:2px solid black;
-                border-radius:10px;
+                /* border:2px solid black;
+                border-radius:10px; */
+                display: flex;
             }
         </style>
     </head>
@@ -87,60 +91,44 @@
         <script>
 
             //On va récupérer la liste des fichier selctionnés par l'utilisateur
-            function recup_File(){
-                const FileList = document.getElementById('input').files; //On récupèrel la liste des fichiers selectionnés par le USER
-                const size_Files_List= document.getElementById('input').files.length; //On récupère la taille de la liste des fichiers selectionnés par le USER
+            function upload(e){
 
+                //Variables pour les divs
                 const file_zone = document.getElementById('file_zone');
                 const file_zone2 = document.getElementById('file_zone2');
                 const file_zone3 = document.getElementById('file_zone3');
 
-                //On va afficher dans les div les fichiers selectionnés par le USER
-
-                for (let i =0; i<size_Files_List;i++){
-
-                    //Afficher les noms des fichiers slecletionnés dans les div
-
-                    file_zone.innerHTML += '<p>'+FileList[i].name;
-                    file_zone2.innerHTML += '<p>'+FileList[i].name;  
-                    file_zone3.innerHTML += '<p>'+FileList[i].name; 
-                }
-            }
-
-            function preiview_image(e){
-                //const files = document.getElementById('input').files;
-
-                const file_zone = document.getElementById('file_zone');
-                const file_zone2 = document.getElementById('file_zone2');
-                const file_zone3 = document.getElementById('file_zone3');
-                
                 const input = e.target; //Recupérer l'input file
-                console.log(input.files);
+                //console.log(input.files); test pour vérifier si on a bien les fichiers selectionnés par le USER
 
                 for(let i=0;i< input.files.length;i++){
-                    //Preview d'une image
+                    //Afficher les noms des fichiers selectionnés par le USER
+                    
+                    //Preview des documents selectionnés par le USER
+
                     if(input.files[i].type.match('image.*')){ //On vérifie si le fichier selectionné est une image
                         const reader = new FileReader(); //On crée un objet de type FileReader pour lire les fichiers
 
-                        reader.onload =function(e){
-                            file_zone.innerHTML += '<img src="'+e.target.result+'" style="width:100px;height:100px;">';
-                            file_zone2.innerHTML += '<img src="'+e.target.result+'" style="width:100px;height:100px;">';
-                            file_zone3.innerHTML += '<img src="'+e.target.result+'" style="width:100px;height:100px;">';
+                        reader.onload =function(e){ //Affoicher l'appercu des images avec le nom du fichier
+                            file_zone.innerHTML += '<div style="border:2px solid black; margin:5px; padding:5px; border-radius:10px;">'+input.files[i].name+'<img src="'+e.target.result+'" style="width:100px;height:100px;">'+'</div>';
+                            file_zone2.innerHTML += '<div style="border:2px solid black; margin:5px; padding:5px; border-radius:10px;">'+input.files[i].name+'<img src="'+e.target.result+'" style="width:100px;height:100px;">'+'</div>';
+                            file_zone3.innerHTML += '<div style="border:2px solid black; margin:5px; padding:5px; border-radius:10px;">'+input.files[i].name+'<img src="'+e.target.result+'" style="width:100px;height:100px;">'+'</div>';
                         }
 
                         reader.readAsDataURL(input.files[i]); //On lit le fichier selectionné par le USER
-                    }else if(input.files[i].type.match('application.*')){ //Vérifier si le fichier est une application
+                    }else if(input.files[i].type.match('application.*')){ //Vérifier si le fichier est une 
                         const reader2 = new FileReader();
 
-                        reader2.onload =function(e){
-                            file_zone.innerHTML += '<img src="/pdf_icon.png" alt="MERCON">';
-                            file_zone2.innerHTML += '<img src="/pdf_icon.png" alt="MERCON">';
-                            file_zone3.innerHTML += '<img src="/pdf_icon.png" alt="MERCON">';
+                        reader2.onload =function(e){ //On creer un apercçu pour les fichiers pdf
+                            file_zone.innerHTML += '<div style="border:2px solid black; margin:5px; padding:5px; border-radius:10px;"> <a href=#><img src ="{% static "img/pdf_icon.png" %}" style="width:100px;height:100px;" alt="pdf_icon">'+input.files[i].name+'</a> </div>';
+                            file_zone2.innerHTML += '<div style="border:2px solid black; margin:5px; padding:5px; border-radius:10px;"> <a href=#><img src ="{% static "img/pdf_icon.png" %}" style="width:100px;height:100px;" alt="pdf_icon">'+input.files[i].name+'</a> </div>';
+                            file_zone3.innerHTML += '<div style="border:2px solid black; margin:5px; padding:5px; border-radius:10px;"> <a href=#><img src ="{% static "img/pdf_icon.png" %}" style="width:100px;height:100px;" alt="pdf_icon">'+input.files[i].name+'</a> </div>';
+
+                            
                         }
                         reader2.readAsDataURL(input.files[i]);
                     }
 
-                    console.log(input.files[i].type);
                 }
             }
 
@@ -149,8 +137,8 @@
             document.getElementById('file_select').addEventListener('click',function(){
                 document.getElementById('input').click()//On simule le click du boutton sur l'input file pour delencher l'explorateur
             })
-            document.getElementById('input').addEventListener('change',recup_File) //On ajoute un event listener sur l'input file pour récupérer les fichiers selectionnés par le USER
-            document.getElementById('input').addEventListener('change',preiview_image,)
+            document.getElementById('input').addEventListener('change',upload) //On ajoute un event listener sur l'input file pour récupérer les fichiers selectionnés par le USER
+            //document.getElementById('input').addEventListener('change',preiview_image,)
 
         </script>
     </body>
@@ -164,3 +152,4 @@
 <!--BUG SECTION-->
 <!--Bug au niveau de la visualisation grace a u bouton pour le surload de fonction sur le btn upload-->
 <!-- On peut ajouter a ce input l'attriput accept="image/*" pour n'accepter qu'un certain type de fichier  -->
+<!-- ON VA MERGE EN UNE SEULE FONCTION-->
