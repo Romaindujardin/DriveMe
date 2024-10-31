@@ -249,87 +249,28 @@
         <div class="left">
             <input type="text" placeholder="Search..." style="width: 100%; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
         </div>
-        <div class="center">               
-          <button type="submit" class="outline">+</button>
+        <div class="center">
+          <input type="file" id="input" multiple style="display: none">               
+          <button type="submit" class="outline" id="upload">+</button>
         </div>
 
         <div class="right">Right Text</div>
     </div>
+    <h3>This Week</h3>
+    <div class="file-item" id="file_zone">
+
+    </div>
+
     <h3>Yesterday</h3>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>EN</p>
-        <p>19/10/2024, 09:39</p>
+    <div class="file-item" id="file_zone2">
+        
     </div>
-    <h3>Previous 7 Days</h3>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>projetpython</p>
+
+    <h3>Previous 7 days</h3>
+    <div class="file-item" id="file_zone3">
+
     </div>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>presentation tedx like</p>
-    </div>
-    <h3>Yesterday</h3>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>EN</p>
-        <p>19/10/2024, 09:39</p>
-    </div>
-    <h3>Previous 7 Days</h3>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>projetpython</p>
-    </div>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>presentation tedx like</p>
-    </div>
-    <h3>Yesterday</h3>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>EN</p>
-        <p>19/10/2024, 09:39</p>
-    </div>
-    <h3>Previous 7 Days</h3>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>projetpython</p>
-    </div>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>presentation tedx like</p>
-    </div>
-    <h3>Yesterday</h3>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>EN</p>
-        <p>19/10/2024, 09:39</p>
-    </div>
-    <h3>Previous 7 Days</h3>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>projetpython</p>
-    </div>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>presentation tedx like</p>
-    </div>
-    <h3>Yesterday</h3>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>EN</p>
-        <p>19/10/2024, 09:39</p>
-    </div>
-    <h3>Previous 7 Days</h3>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>projetpython</p>
-    </div>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>presentation tedx like</p>
-    </div>
+
     <!-- Ajouter d'autres fichiers ici -->
 </div>
 
@@ -355,7 +296,47 @@
         text-align: right;
     }
 </style>
+<!--Script pour l'upload-->
+<script>
+  function upload(e){
+    //Recupérer les divs
+    const file_zone =document.getElementById('file_zone');
+    const file_zone2 =document.getElementById('file_zone2');
+    const file_zone3 =document.getElementById('file_zone3');
+    //Récuprer le input file
+    const input = e.target;
+    // console.log(input.files);
 
+    //La boucle pour afficher chque fichier en fonction de son type
+    for(let i=0; i<input.files.length; i++){
+
+      if(input.files[i].type.match('image.*')){
+        const reader = new FileReader();
+
+        reader.onload = function(e){
+          file_zone.innerHTML +='<div style="border:2px solid black; margin:5px; padding:5px; border-radius:10px;">'+input.files[i].name+'<img src="'+e.target.result+'" style="width:100px;height:100px;">'+'</div>';
+          file_zone2.innerHTML +='<div style="border:2px solid black; margin:5px; padding:5px; border-radius:10px;">'+input.files[i].name+'<img src="'+e.target.result+'" style="width:100px;height:100px;">'+'</div>';
+          file_zone3.innerHTML +='<div style="border:2px solid black; margin:5px; padding:5px; border-radius:10px;">'+input.files[i].name+'<img src="'+e.target.result+'" style="width:100px;height:100px;">'+'</div>';
+        }
+        reader.readAsDataURL(input.files[i]);//Lire le fichier
+      }else if(input.files[i].type.match('application.*')){
+        const reader2 = new FileReader();
+
+        reader2.onload=function(e){
+          file_zone.innerHTML += '<div style="border:2px solid black; margin:5px; padding:5px; border-radius:10px;"> <a href=#><img src ="{% static "img/pdf-icon-blue.png" %}" style="width:100px;height:100px;" alt="pdf_icon">'+input.files[i].name+'</a> </div>';
+          file_zone2.innerHTML += '<div style="border:2px solid black; margin:5px; padding:5px; border-radius:10px;"> <a href=#><img src ="{% static "img/pdf-icon-blue.png" %}" style="width:100px;height:100px;" alt="pdf_icon">'+input.files[i].name+'</a> </div>';
+          file_zone3.innerHTML += '<div style="border:2px solid black; margin:5px; padding:5px; border-radius:10px;"> <a href=#><img src ="{% static "img/pdf-icon-blue.png" %}" style="width:100px;height:100px;" alt="pdf_icon">'+input.files[i].name+'</a> </div>';
+        }
+        reader2.readAsDataURL(input.files[i]);
+      }
+    }
+
+  }
+  document.getElementById('upload').addEventListener('click',()=>{
+    document.getElementById('input').click();
+  });
+  document.getElementById('input').addEventListener('change',upload);
+</script>
 </body>
 </html>
 <style>
