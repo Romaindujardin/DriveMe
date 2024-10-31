@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Hello</title>
+        <style>
+            /* On va appliquer le css de la zone des fichiers */
+            body{
+                font-family: Arial, Helvetica, sans-serif;
+                background: grey;
+                flex-direction: column;
+                margin:0;
+            }
+
+            header{
+                background-color: #333;
+                color: white;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            h1{
+                font-size: 115%;
+                background-color:lightgoldenrodyellow;
+                border: 2px solid black;
+                border-radius: 10px ;
+            }
+
+            #file_zone{
+                border: 2px solid black;
+                border-radius:10px;
+            }
+
+            #file_zone2{
+                border: 2px solid black;
+               border-radius:10px;
+            }
+
+            #file_zone3{
+                border:2px solid black;
+                border-radius:10px;
+            }
+        </style>
+    </head>
+    <header>
+        <label style="font-size: 70px;">DriveMe</label>
+    </header>
+    <body>
+        <label>Add Element:</label>
+
+        <input type="file" value="CHOSE File" id="input" multiple style="display : none" /> <!--On utilise l'API file pour accéder a un objet FileList qui contient des objets File représenteés par les fichiers selcetionnés par le USER-->
+        <button  id="file_select">Upload</button>
+    </br>
+        <label>Télécharger vos documents:</label>
+        <button id="donlawd">Download</button>
+    </br>
+        <label>Supprimer vos documents:</label>
+        <button id="delete">Delete</button>
+    </br>
+        <label>Partager vos documents:</label>
+        <button id="Share">Share</button>
+    </br>
+        <label>Rechercher vos documents:</label>
+        <input type="text" placeholder="Recherche">
+        <button id="Search">Search</button>
+    </br>
+
+        <h1>AUJOURD'HUI:</h1> <!--L'attribut multiple est placé dans la balise file pour selctionne plusieurs fuchiers-->
+            <div id="file_zone">
+
+            </div>
+
+        <h1>OCTOBRE</h1>
+            <div id="file_zone2">
+
+            </div>
+
+        <h1>SEPTEMBRE</h1>
+            <div id="file_zone3">
+
+            </div>
+
+
+
+<!--Javascript section-->
+
+        <script>
+
+            //On va récupérer la liste des fichier selctionnés par l'utilisateur
+            function recup_File(){
+                const FileList = document.getElementById('input').files; //On récupèrel la liste des fichiers selectionnés par le USER
+                const size_Files_List= document.getElementById('input').files.length; //On récupère la taille de la liste des fichiers selectionnés par le USER
+
+                const file_zone = document.getElementById('file_zone');
+                const file_zone2 = document.getElementById('file_zone2');
+                const file_zone3 = document.getElementById('file_zone3');
+
+                //On va afficher dans les div les fichiers selectionnés par le USER
+
+                for (let i =0; i<size_Files_List;i++){
+
+                    //Afficher les noms des fichiers slecletionnés dans les div
+
+                    file_zone.innerHTML += '<p>'+FileList[i].name;
+                    file_zone2.innerHTML += '<p>'+FileList[i].name;  
+                    file_zone3.innerHTML += '<p>'+FileList[i].name; 
+                }
+            }
+
+            function preiview_image(e){
+                //const files = document.getElementById('input').files;
+
+                const file_zone = document.getElementById('file_zone');
+                const file_zone2 = document.getElementById('file_zone2');
+                const file_zone3 = document.getElementById('file_zone3');
+                
+                const input = e.target; //Recupérer l'input file
+                console.log(input.files);
+
+                for(let i=0;i< input.files.length;i++){
+                    //Preview d'une image
+                    if(input.files[i].type.match('image.*')){ //On vérifie si le fichier selectionné est une image
+                        const reader = new FileReader(); //On crée un objet de type FileReader pour lire les fichiers
+
+                        reader.onload =function(e){
+                            file_zone.innerHTML += '<img src="'+e.target.result+'" style="width:100px;height:100px;">';
+                            file_zone2.innerHTML += '<img src="'+e.target.result+'" style="width:100px;height:100px;">';
+                            file_zone3.innerHTML += '<img src="'+e.target.result+'" style="width:100px;height:100px;">';
+                        }
+
+                        reader.readAsDataURL(input.files[i]); //On lit le fichier selectionné par le USER
+                    }else if(input.files[i].type.match('application.*')){ //Vérifier si le fichier est une application
+                        const reader2 = new FileReader();
+
+                        reader2.onload =function(e){
+                            file_zone.innerHTML += '<img src="/pdf_icon.png" alt="MERCON">';
+                            file_zone2.innerHTML += '<img src="/pdf_icon.png" alt="MERCON">';
+                            file_zone3.innerHTML += '<img src="/pdf_icon.png" alt="MERCON">';
+                        }
+                        reader2.readAsDataURL(input.files[i]);
+                    }
+
+                    console.log(input.files[i].type);
+                }
+            }
+
+            //On declanche l'ouverture de l'explorateur avec le bouton upload
+
+            document.getElementById('file_select').addEventListener('click',function(){
+                document.getElementById('input').click()//On simule le click du boutton sur l'input file pour delencher l'explorateur
+            })
+            document.getElementById('input').addEventListener('change',recup_File) //On ajoute un event listener sur l'input file pour récupérer les fichiers selectionnés par le USER
+            document.getElementById('input').addEventListener('change',preiview_image,)
+
+        </script>
+    </body>
+</html>
+
+<!--MEMO SECTION-->
+<!--Les attribut pour les objets de type File =(name,size,type)-->
+<!-- A ne pas confondre avec les attributs de la liste de Fichier-->
+<!-- différence en button et input type type button c'est que input ne prend que du text contrairement a un button qui prend(txt,img...) d'ou contenu plus varié-->
+
+<!--BUG SECTION-->
+<!--Bug au niveau de la visualisation grace a u bouton pour le surload de fonction sur le btn upload-->
+<!-- On peut ajouter a ce input l'attriput accept="image/*" pour n'accepter qu'un certain type de fichier  -->
