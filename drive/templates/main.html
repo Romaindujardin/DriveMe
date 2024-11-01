@@ -245,81 +245,44 @@
           </form>
       </div>
   </div>
-    <h3>Yesterday</h3>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>EN</p>
-        <p>19/10/2024, 09:39</p>
-    </div>
-    <h3>Previous 7 Days</h3>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>projetpython</p>
-    </div>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>presentation tedx like</p>
-    </div>
-    <h3>Yesterday</h3>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>EN</p>
-        <p>19/10/2024, 09:39</p>
-    </div>
-    <h3>Previous 7 Days</h3>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>projetpython</p>
-    </div>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>presentation tedx like</p>
-    </div>
-    <h3>Yesterday</h3>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>EN</p>
-        <p>19/10/2024, 09:39</p>
-    </div>
-    <h3>Previous 7 Days</h3>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>projetpython</p>
-    </div>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>presentation tedx like</p>
-    </div>
-    <h3>Yesterday</h3>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>EN</p>
-        <p>19/10/2024, 09:39</p>
-    </div>
-    <h3>Previous 7 Days</h3>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>projetpython</p>
-    </div>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>presentation tedx like</p>
-    </div>
-    <h3>Yesterday</h3>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>EN</p>
-        <p>19/10/2024, 09:39</p>
-    </div>
-    <h3>Previous 7 Days</h3>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>projetpython</p>
-    </div>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>presentation tedx like</p>
-    </div>
+  <h1>Mes Documents</h1>
+  <a href="{% url 'create_folder' %}">Créer un dossier</a>
+  {% for dossier in dossiers %}
+  <div>
+      <h3><a href="{% url 'folder_documents' folder_id=dossier.id %}">{{ dossier.nom }}</a></h3>  <!-- Lien vers la nouvelle vue -->
+      <a href="{% url 'upload_folder' folder_id=dossier.id %}">Télécharger un fichier</a>
+      <a href="{% url 'rename_folder' folder_id=dossier.id %}">Renommer</a>
+  </div>
+  {% empty %}
+  <p>Aucun dossier trouvé.</p>
+  {% endfor %}
+  
+    
+  <div class="filter">
+      <label for="type_fichier">Filtrer par type de fichier:</label>
+      <select id="type_fichier" name="type_fichier" onchange="filterDocuments(this.value)">
+          <option value="">Tous</option>
+          <option value="pdf">PDF</option>
+          <option value="docx">Word</option>
+          <option value="xlsx">Excel</option>
+          <!-- Ajoutez d'autres types de fichiers si nécessaire -->
+      </select>
+  </div>
+  
+  <div class="document-grid">
+      {% for document in documents %}
+          <div class="document-card">
+              <img src="{% static 'icons/'|add:document.type_fichier|add:'.png' %}" alt="{{ document.nom }}">
+              <h3>{{ document.nom }}</h3>
+              <p>Type: {{ document.type_fichier }}</p>
+              <p>Taille: {{ document.taille_fichier }} Ko</p>
+              <p>Date d'ajout: {{ document.date_ajout|date:"d M Y" }}</p>
+          </div>
+      {% empty %}
+          <p>Aucun document trouvé.</p>
+      {% endfor %}
+  </div>
+  
     <!-- Ajouter d'autres fichiers ici -->
 </div>
 
@@ -345,6 +308,18 @@
         text-align: right;
     }
 </style>
+<script>
+  function filterDocuments(type) {
+      const cards = document.querySelectorAll('.document-card');
+      cards.forEach(card => {
+          if (type === "" || card.querySelector('p:nth-child(2)').textContent.includes(type)) {
+              card.style.display = 'block';
+          } else {
+              card.style.display = 'none';
+          }
+      });
+  }
+</script>
 <script>
   // JavaScript pour afficher/masquer la modale
   const openModalBtn = document.getElementById('openModalBtn');

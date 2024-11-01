@@ -2,8 +2,8 @@ from django.urls import path
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import create_folder, delete_folder, rename_folder, upload_file
-
+from .views import create_folder, delete_folder, rename_folder, upload_folder, affilier_document
+from .views import folder_document_list, download_file, folder_list
 
 urlpatterns = [
     path('', views.home_view, name='home'),  # URL racine redirige vers la page 'home'
@@ -16,7 +16,11 @@ urlpatterns = [
     path('create-folder/', create_folder, name='create_folder'),
     path('delete-folder/<int:folder_id>/', delete_folder, name='delete_folder'),
     path('rename-folder/<int:folder_id>/', rename_folder, name='rename_folder'),
-    path('upload-file/<int:folder_id>/', upload_file, name='upload_file'),
+    path('upload_folder/<int:folder_id>/', upload_folder, name='upload_folder'),
+    path('affilier_document/<int:document_id>/', affilier_document, name='affilier_document'),
+    path('folder/<int:folder_id>/', folder_document_list, name='folder_documents'),
+    path('download/<int:file_id>/', download_file, name='download_file'),
+    path('folders/', folder_list, name='folder_list'),  
 ]
 
 if settings.DEBUG:

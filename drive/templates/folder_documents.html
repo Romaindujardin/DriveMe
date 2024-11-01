@@ -1,0 +1,29 @@
+<!-- folder_documents.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ dossier.nom }} - Fichiers</title>
+</head>
+<body>
+    <button onclick="goBack()">Retour</button>
+    <h1> {{ dossier.nom }}</h1>
+
+    {% if documents %}
+        <ul>
+            {% for document in documents %}
+                <li>{{ document.nom }} - <a href="{% url 'download_file' document.id %}">Télécharger</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aucun fichier trouvé dans ce dossier.</p>
+    {% endif %}
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</body>
+</html>
