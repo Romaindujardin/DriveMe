@@ -16,6 +16,5 @@ class Document(models.Model):
     taille_fichier = models.PositiveIntegerField()
     utilisateur = models.ForeignKey(User, on_delete=models.CASCADE)
     dossier = models.ForeignKey(Dossier, null=True, blank=True, on_delete=models.CASCADE)
-    
     def __str__(self):
         return self.nom
