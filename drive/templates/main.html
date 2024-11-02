@@ -249,9 +249,17 @@
   <a href="{% url 'create_folder' %}">Créer un dossier</a>
   {% for dossier in dossiers %}
   <div>
-      <h3><a href="{% url 'folder_documents' folder_id=dossier.id %}">{{ dossier.nom }}</a></h3>  <!-- Lien vers la nouvelle vue -->
-      <a href="{% url 'upload_folder' folder_id=dossier.id %}">Télécharger un fichier</a>
-      <a href="{% url 'rename_folder' folder_id=dossier.id %}">Renommer</a>
+      <h3>
+          <a href="{% url 'folder_documents' folder_id=dossier.id %}">{{ dossier.nom }}</a>
+                <!-- Bouton avec trois points pour les actions -->
+          <div class="action-menu">
+            <button class="menu-button">⋮</button>
+            <div class="dropdown-content">
+                <a href="{% url 'upload_folder' folder_id=dossier.id %}">Télécharger un fichier</a>
+                <a href="{% url 'rename_folder' folder_id=dossier.id %}">Renommer</a>
+            </div>
+          </div>
+      </h3>
   </div>
   {% empty %}
   <p>Aucun dossier trouvé.</p>
@@ -307,6 +315,43 @@
     .sub-navbar .right {
         text-align: right;
     }
+    .action-menu {
+      position: relative;
+      display: inline-block;
+  }
+  
+  .menu-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 20px; /* Taille du bouton */
+      padding: 0; /* Supprime le padding par défaut */
+  }
+  
+  .dropdown-content {
+      display: none; /* Masquer par défaut */
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+  }
+  
+  .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+  }
+  
+  .dropdown-content a:hover {
+      background-color: #f1f1f1;
+  }
+  
+  .action-menu:hover .dropdown-content {
+      display: block; /* Afficher le menu lorsque l'utilisateur survole le bouton */
+  }
+  
 </style>
 <script>
   function filterDocuments(type) {
