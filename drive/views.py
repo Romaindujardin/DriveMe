@@ -78,11 +78,11 @@ def main_view(request):
 def document_list(request):
     file_type = request.GET.get('type')  # Récupère le type de fichier depuis les paramètres de l'URL
 
-    # Filtrer les documents par utilisateur et éventuellement par type de fichier
+    # Filtrer les documents par utilisateur, exclure ceux associés à un dossier, et éventuellement par type de fichier
     if file_type:
-        documents = Document.objects.filter(utilisateur=request.user, type_fichier=file_type).order_by('-date_ajout')
+        documents = Document.objects.filter(utilisateur=request.user, dossier__isnull=True, type_fichier=file_type).order_by('-date_ajout')
     else:
-        documents = Document.objects.filter(utilisateur=request.user).order_by('-date_ajout')
+        documents = Document.objects.filter(utilisateur=request.user, dossier__isnull=True).order_by('-date_ajout')
 
     # Récupérer les dossiers de l'utilisateur
     dossiers = Dossier.objects.filter(utilisateur=request.user)
@@ -99,6 +99,7 @@ def document_list(request):
         'documents': documents,
         'used_space': used_space
     })
+
 
 
 
@@ -221,3 +222,24 @@ def upload_document(request):
         form = DocumentForm()
         
     return render(request, 'upload_document.html', {'form': form})
+
+@login_required
+def rename_document(request, document_id):
+    document = get_object_or_404(Document, id=document_id)
+    
+    if request.method == 'POST':
+        form = DocumentForm(request.POST, instance=document)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Nom du document modifié avec succès.")
+            return redirect('document_list')  # Redirige vers la liste des documents
+    else:
+        form = DocumentForm(instance=document)
+
+    return render(request, 'rename_document.html', {'form': form})
+@login_required
+def delete_document(request, document_id):
+    document = get_object_or_404(Document, id=document_id, utilisateur=request.user)
+    document.delete()
+    messages.success(request, 'Document supprimé avec succès.')
+    return redirect('document_list')

@@ -199,50 +199,79 @@
     <!-- Le reste de votre code HTML pour afficher les dossiers et documents -->
   </div>
   <a href="{% url 'create_folder' %}" class="button">Créer un dossier</a>
-  {% for dossier in dossiers %}
-  <div>
-      <h3>
-          <img class="folder-icon" src="{% static 'icons/folder.png' %}" alt="Dossier" />  <!-- Icône du dossier -->
-          <a href="{% url 'folder_documents' folder_id=dossier.id %}" class="folder-link">{{ dossier.nom }}</a>  <!-- Lien cliquable pour le nom du dossier -->
-          <!-- Bouton avec trois points pour les actions -->
-          <div class="action-menu">
-              <button>⋮</button>
-              <div class="dropdown-content">
-                  <a href="{% url 'upload_folder' folder_id=dossier.id %}">Télécharger un fichier</a>
-                  <a href="{% url 'rename_folder' folder_id=dossier.id %}">Renommer</a>
-              </div>
-          </div>
-      </h3>
-  </div>
-  {% empty %}
-  <p>Aucun dossier trouvé.</p>
-  {% endfor %}
-  
-  
-
-  <div class="document-grid">
-    {% for document in documents %}
-        <div class="document-card" data-type="{{ document.type_fichier }}">
-            {% if document.type_fichier == 'pdf' %}
-                <img class="document-icon" src="{% static 'icons/pdf.png' %}" alt="{{ document.nom }}">
-            {% elif document.type_fichier == 'docx' %}
-                <img class="document-icon" src="{% static 'icons/word.png' %}" alt="{{ document.nom }}">
-            {% elif document.type_fichier == 'xlsx' %}
-                <img class="document-icon" src="{% static 'icons/excel.png' %}" alt="{{ document.nom }}">
-            {% elif document.type_fichier in 'jpg,png,gif,PNG' %}
-                <img class="document-icon" src="{% static 'icons/image.png' %}" alt="{{ document.nom }}">
-            {% else %}
-                <img class="document-icon" src="{% static 'icons/default.png' %}" alt="{{ document.nom }}"> <!-- Icône par défaut -->
-            {% endif %}
-            <h3>{{ document.nom }}</h3>
-            <p>Type: {{ document.type_fichier }}</p>
-            <p>Taille: {{ document.taille_fichier_mo|floatformat:1 }} Mo</p>
-            <p>Date d'ajout: {{ document.date_ajout|date:"d M Y" }}</p>
-        </div>
-    {% empty %}
-        <p>Aucun document trouvé.</p>
-    {% endfor %}
-</div>
+  <table>
+    <thead>
+        <tr>
+            <th>Icône</th>
+            <th>Nom</th>
+            <th>Propriétaire</th>
+            <th>Date de Dernière Modification</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for dossier in dossiers %}
+        <tr>
+            <td>
+                <img class="folder-icon" src="{% static 'icons/folder.png' %}" alt="Dossier" />
+            </td>
+            <td>
+                <a href="{% url 'folder_documents' folder_id=dossier.id %}" class="folder-link">{{ dossier.nom }}</a>
+            </td>
+            <td>{{ dossier.proprietaire }}</td>
+            <td>{{ dossier.date_derniere_modification|date:"d M Y" }}</td>
+            <td>
+                <div class="action-menu">
+                    <button>⋮</button>
+                    <div class="dropdown-content">
+                        <a href="{% url 'upload_folder' folder_id=dossier.id %}">Télécharger un fichier</a>
+                        <a href="{% url 'rename_folder' folder_id=dossier.id %}">Renommer</a>
+                        <a href="{% url 'delete_folder' folder_id=dossier.id %}">Supprimer</a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">Aucun dossier trouvé.</td>
+        </tr>
+        {% endfor %}
+        
+        {% for document in documents %}
+        <tr>
+            <td>
+                {% if document.type_fichier == 'pdf' %}
+                    <img class="document-icon" src="{% static 'icons/pdf.png' %}" alt="{{ document.nom }}">
+                {% elif document.type_fichier == 'docx' %}
+                    <img class="document-icon" src="{% static 'icons/word.png' %}" alt="{{ document.nom }}">
+                {% elif document.type_fichier == 'xlsx' %}
+                    <img class="document-icon" src="{% static 'icons/excel.png' %}" alt="{{ document.nom }}">
+                {% elif document.type_fichier in 'jpg,png,gif,PNG' %}
+                    <img class="document-icon" src="{% static 'icons/image.png' %}" alt="{{ document.nom }}">
+                {% else %}
+                    <img class="document-icon" src="{% static 'icons/default.png' %}" alt="{{ document.nom }}"> <!-- Icône par défaut -->
+                {% endif %}
+            </td>
+            <td>{{ document.nom }}</td>
+            <td>{{ document.utilisateur.username }}</td> <!-- Remplacez 'username' par la propriété appropriée de l'utilisateur -->
+            <td>{{ document.date_ajout|date:"d M Y" }}</td>
+            <td>
+                <div class="action-menu">
+                    <button>⋮</button>
+                    <div class="dropdown-content">
+                        <a href="{% url 'rename_document' document_id=document.id %}">Renommer</a>
+                        <a href="{% url 'delete_document' document.id %}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce document ?');">Supprimer</a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">Aucun document trouvé.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
   <script>
     function filterDocuments(selectedType) {
@@ -308,6 +337,35 @@
   text-decoration: underline; /* Ajoute un soulignement au survol, si souhaité */
   color: darkblue; /* Change la couleur au survol, si souhaité */
 }
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.action-menu {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.action-menu:hover .dropdown-content {
+  display: block;
+}
+
 
 </style>
 <style>
