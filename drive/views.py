@@ -7,6 +7,11 @@ from django.contrib.auth import logout
 from .forms import DocumentForm
 from django.http import FileResponse
 from .models import Dossier, Document
+from django.core.exceptions import ValidationError
+from django.contrib import messages
+import os
+from django.db.models import Sum
+from django.conf import settings
 def logout_view(request):
     logout(request)  # Déconnecte l'utilisateur
     return redirect('home')  # Redirige vers la page d'accueil ou une autre page de ton choix
@@ -78,9 +83,23 @@ def document_list(request):
         documents = Document.objects.filter(utilisateur=request.user, type_fichier=file_type).order_by('-date_ajout')
     else:
         documents = Document.objects.filter(utilisateur=request.user).order_by('-date_ajout')
-        dossiers = Dossier.objects.filter(utilisateur=request.user)
 
-    return render(request, 'main.html', {'dossiers': dossiers, 'documents': documents})
+    # Récupérer les dossiers de l'utilisateur
+    dossiers = Dossier.objects.filter(utilisateur=request.user)
+
+    # Récupérer l'espace utilisé par l'utilisateur
+    used_space = get_user_storage_usage(request.user) / (1024 * 1024)  # Convertir en Mo
+
+    # Convertir la taille des documents en Mo
+    for document in documents:
+        document.taille_fichier_mo = document.taille_fichier / 1024  # Conversion de Ko à Mo
+
+    return render(request, 'main.html', {
+        'dossiers': dossiers,
+        'documents': documents,
+        'used_space': used_space
+    })
+
 
 
 
@@ -152,3 +171,53 @@ def download_file(request, file_id):
 def folder_list(request):
     dossiers = Dossier.objects.all()  # Récupère tous les dossiers
     return render(request, 'your_template.html', {'dossiers': dossiers})
+
+
+def get_user_storage_usage(user):
+    # Calcule l'espace utilisé par l'utilisateur en utilisant l'agrégation
+    total_size = Document.objects.filter(utilisateur=user).aggregate(Sum('taille_fichier'))['taille_fichier__sum'] or 0
+    return total_size
+
+@login_required
+def upload_document(request):
+    if request.method == 'POST':
+        form = DocumentForm(request.POST, request.FILES)
+        fichier = request.FILES.get('fichier')
+        
+        # Vérifier si le fichier existe
+        if fichier:
+            # Vérifier la taille du fichier (maximum 40 Mo)
+            if fichier.size > 40 * 1024 * 1024:  # 40 Mo
+                messages.error(request, "La taille du fichier ne doit pas dépasser 40 Mo.")
+                return render(request, 'upload_document.html', {'form': form})
+
+            # Vérifier l'espace de stockage maximum (100 Mo)
+            used_space = get_user_storage_usage(request.user)  # Taille en Ko
+            if used_space + (fichier.size / 1024) > 100 * 1024:  # 100 Mo
+                messages.error(request, "L'espace de stockage maximum de 100 Mo est dépassé.")
+                return render(request, 'upload_document.html', {'form': form})
+
+            # Si toutes les vérifications passent, valider le formulaire
+            if form.is_valid():
+                document = form.save(commit=False)
+                document.utilisateur = request.user
+                document.taille_fichier = fichier.size / 1024  # En Ko
+                document.type_fichier = fichier.name.split('.')[-1]  # Extension de fichier
+
+                # Créer un dossier pour chaque utilisateur dans le répertoire de stockage
+                user_directory = os.path.join(settings.MEDIA_ROOT, request.user.username)
+                os.makedirs(user_directory, exist_ok=True)
+
+                # Enregistrer le fichier dans le dossier de l'utilisateur
+                document.fichier.name = f"{request.user.username}/{fichier.name}"
+                document.save()
+
+                messages.success(request, 'Document téléchargé avec succès.')
+                return redirect('document_list')
+        else:
+            messages.error(request, "Aucun fichier sélectionné.")
+
+    else:
+        form = DocumentForm()
+        
+    return render(request, 'upload_document.html', {'form': form})

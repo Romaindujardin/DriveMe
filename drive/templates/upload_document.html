@@ -1,0 +1,16 @@
+<!-- upload_document.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Document</title>
+</head>
+<body>
+    <h2>Ajouter un document</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Rechercher et ajouter</button>
+    </form>
+</body>
+</html>

@@ -20,7 +20,8 @@ urlpatterns = [
     path('affilier_document/<int:document_id>/', affilier_document, name='affilier_document'),
     path('folder/<int:folder_id>/', folder_document_list, name='folder_documents'),
     path('download/<int:file_id>/', download_file, name='download_file'),
-    path('folders/', folder_list, name='folder_list'),  
+    path('folders/', folder_list, name='folder_list'), 
+    path('upload/', views.upload_document, name='upload_document'), 
 ]
 
 if settings.DEBUG:
