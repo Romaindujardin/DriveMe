@@ -16,35 +16,7 @@
       height: 100vh;
     }
 
-    /* Sidebar */
-    .sidebar {
-      width: 250px;
-      background-color: #f7f7f7;
-      padding: 20px;
-      position: fixed;
-      height: 100%;
-      border-right: 1px solid #ddd;
-    }
-
-    .sidebar h2 {
-      margin-bottom: 20px;
-      font-size: 20px;
-    }
-
-    .sidebar ul {
-      list-style-type: none;
-      padding: 0;
-    }
-
-    .sidebar ul li {
-      margin-bottom: 10px;
-    }
-
-    .sidebar ul li a {
-      text-decoration: none;
-      color: #333;
-      font-size: 16px;
-    }
+  
 
     /* Navbar */
     .navbar {
@@ -123,18 +95,6 @@
 
 <body>
 
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <ul>
-      <li><a href="#">Recents</a></li>
-      <li><a href="#">Browse</a></li>
-      <li><a href="#">Shared</a></li>
-    <li><a href="#" style="display: flex; align-items: center;"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 16px; height: 16px; margin-right: 5px; color: rgb(64, 115, 255);"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18.75A2.25 2.25 0 0 0 8.25 21h7.5A2.25 2.25 0 0 0 18 18.75V7.5H6v11.25zM9 7.5V6a3 3 0 0 1 6 0v1.5M4.5 7.5h15"/></svg>Recently Deleted</a></li>
-      <li><a href="#">Favourites</a></li>
-      <li><a href="#">Downloads</a></li>
-      <li><a href="{% url 'logout' %}">Déconnexion</a></li>
-    </ul>
-  </div>
 
   <!-- Navbar -->
 
