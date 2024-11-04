@@ -1,20 +1,17 @@
-{% extends 'base.html' %}
 {% load static %}
 <!-- upload_document.html -->
-{%block content %} 
+
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Upload Document</title>
-</head>
-<body>
+  </head>
+  <body>
     <h2>Ajouter un document</h2>
     <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Rechercher et ajouter</button>
+      {% csrf_token %} {{ form.as_p }}
+      <button type="submit">Rechercher et ajouter</button>
     </form>
-</body>
+  </body>
 </html>
-{% endblock %}
