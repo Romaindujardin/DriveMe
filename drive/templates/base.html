@@ -1,4 +1,3 @@
-<!-- templates/base.html -->
 {% load static %}
 <!DOCTYPE html>
 <html lang="fr">
@@ -7,6 +6,92 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}DriveMe{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        /* Styles de la navbar */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Assure que le corps prend toute la hauteur de la fenêtre */
+            margin: 0; /* Enlève les marges par défaut du corps */
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #fff;
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar .left {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .left a {
+            text-decoration: none;
+            font-size: 24px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .navbar .right {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .right a {
+            text-decoration: none;
+            margin-left: 20px;
+            color: #333;
+            font-size: 18px;
+        }
+
+        .profile-menu {
+            position: relative;
+        }
+
+        .profile-photo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            border-radius: 5px;
+            padding: 10px;
+        }
+
+        .dropdown-menu a {
+            text-decoration: none;
+            color: #333;
+            display: block;
+            padding: 5px 10px;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: rgba(64, 115, 255, 0.1);
+        }
+
+        .content {
+            flex: 1; /* Permet à la section de contenu de prendre tout l'espace disponible */
+            padding: 20px; /* Ajoute de l'espace autour du contenu */
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #f8f8f8;
+        }
+    </style>
 </head>
 <body>
     <!-- Navbar -->
