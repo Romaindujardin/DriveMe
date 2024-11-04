@@ -102,9 +102,10 @@
   <!-- Main Content -->
   <div class="main-content">
     <div class="sub-navbar">
-        <div class="left">
-            <input type="text" placeholder="Search..." style="width: 100%; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
-        </div>
+      <div class="left" style="display: flex; gap: 10px;">
+        <input type="text" id="searchInput" placeholder="Search..." style="width: 100%; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
+    </div>
+    
         <div class="sub-navbar"> <!-- bouton pour ajouter un fichier -->
           <div class="center">
             <a href="{% url 'upload_document' %}" class="button">+</a>
@@ -136,6 +137,7 @@
             <th>Nom</th>
             <th>Propriétaire</th>
             <th>Date de Dernière Modification</th>
+            <th>Taille</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -148,8 +150,9 @@
             <td>
                 <a href="{% url 'folder_documents' folder_id=dossier.id %}" class="folder-link">{{ dossier.nom }}</a>
             </td>
-            <td>{{ dossier.proprietaire }}</td>
-            <td>{{ dossier.date_derniere_modification|date:"d M Y" }}</td>
+            <td>{{ dossier.utilisateur.username}}</td>
+            <td>{{ dossier.date_creation|date:"d M Y" }}</td>
+            <td>---</td> <!-- Cellule vide pour la taille des dossiers -->
             <td>
                 <div class="action-menu">
                     <button>⋮</button>
@@ -163,12 +166,12 @@
         </tr>
         {% empty %}
         <tr>
-            <td colspan="5">Aucun dossier trouvé.</td>
+            <td colspan="6">Aucun dossier trouvé.</td>
         </tr>
         {% endfor %}
-        
+
         {% for document in documents %}
-        <tr>
+        <tr class="document-card" data-type="{{ document.type_fichier }}">
             <td>
                 {% if document.type_fichier == 'pdf' %}
                     <img class="document-icon" src="{% static 'icons/pdf.png' %}" alt="{{ document.nom }}">
@@ -185,6 +188,7 @@
             <td>{{ document.nom }}</td>
             <td>{{ document.utilisateur.username }}</td> <!-- Remplacez 'username' par la propriété appropriée de l'utilisateur -->
             <td>{{ document.date_ajout|date:"d M Y" }}</td>
+            <td>{{ document.taille_fichier_mo|floatformat:2 }} Ko</td> <!-- Affiche la taille en Mo avec deux décimales -->
             <td>
                 <div class="action-menu">
                     <button>⋮</button>
@@ -197,11 +201,12 @@
         </tr>
         {% empty %}
         <tr>
-            <td colspan="5">Aucun document trouvé.</td>
+            <td colspan="6">Aucun document trouvé.</td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
+
 
   <script>
     function filterDocuments(selectedType) {
@@ -223,6 +228,39 @@
             }
         });
     }
+
+// Fonction de filtrage des documents et dossiers avec recherche partielle
+function searchItems(searchTerm) {
+  const rows = document.querySelectorAll('.document-card, .folder-link');
+  const lowerCaseSearchTerm = searchTerm.toLowerCase();
+
+  rows.forEach(row => {
+      // Récupère le texte du nom du document ou dossier en minuscule
+      const itemName = row.textContent.toLowerCase();
+
+      // Affiche la ligne si une partie du terme est trouvée dans le nom du document ou dossier
+      if (itemName.includes(lowerCaseSearchTerm)) {
+          if (row.classList.contains('document-card')) {
+              row.style.display = "table-row"; // Affiche la ligne pour les documents
+          } else {
+              row.closest('tr').style.display = "table-row"; // Affiche la ligne pour les dossiers
+          }
+      } else {
+          if (row.classList.contains('document-card')) {
+              row.style.display = "none"; // Masque la ligne pour les documents
+          } else {
+              row.closest('tr').style.display = "none"; // Masque la ligne pour les dossiers
+          }
+      }
+  });
+}
+
+// Écouteur d'événement pour la saisie dans le champ de recherche
+document.getElementById("searchInput").addEventListener("input", function() {
+  const searchTerm = this.value;
+  searchItems(searchTerm); // Filtre les documents et dossiers en temps réel
+});
+
   </script>
   
     <!-- Ajouter d'autres fichiers ici -->
