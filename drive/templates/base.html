@@ -1,188 +1,223 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}DriveMe{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
     <style>
-        /* Styles de la navbar */
-        body {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh; /* Assure que le corps prend toute la hauteur de la fenêtre */
-            margin: 0; /* Enlève les marges par défaut du corps */
-        }
-        /* Sidebar */
-        .sidebar {
-          width: 250px;
-          background-color: #f7f7f7;
-          padding: 20px;
-          position: fixed;
-          height: 100%;
-          border-right: 1px solid #ddd;
-        }
-    
-        .sidebar h2 {
-          margin-bottom: 20px;
-          font-size: 20px;
-        }
-    
-        .sidebar ul {
-          list-style-type: none;
-          padding: 0;
-        }
-    
-        .sidebar ul li {
-          margin-bottom: 10px;
-        }
-    
-        .sidebar ul li a {
-          text-decoration: none;
-          color: #333;
-          font-size: 16px;
-        }
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #fff;
-            padding: 10px 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
+      /* Styles de la navbar */
+      body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh; /* Assure que le corps prend toute la hauteur de la fenêtre */
+        margin: 0; /* Enlève les marges par défaut du corps */
+      }
+      /* Sidebar */
+      .sidebar {
+        width: 250px;
+        background-color: #f7f7f7;
+        padding: 20px;
+        position: fixed;
+        height: 100%;
+        border-right: 1px solid #ddd;
+      }
 
-        .navbar .left {
-            display: flex;
-            align-items: center;
-        }
+      .sidebar h2 {
+        margin-bottom: 20px;
+        font-size: 20px;
+      }
 
-        .navbar .left a {
-            text-decoration: none;
-            font-size: 24px;
-            color: #333;
-            font-weight: bold;
-        }
+      .sidebar ul {
+        list-style-type: none;
+        padding: 0;
+      }
 
-        .navbar .right {
-            display: flex;
-            align-items: center;
-        }
+      .sidebar ul li {
+        margin-bottom: 10px;
+      }
 
-        .navbar .right a {
-            text-decoration: none;
-            margin-left: 20px;
-            color: #333;
-            font-size: 18px;
-        }
+      .sidebar ul li a {
+        text-decoration: none;
+        color: #333;
+        font-size: 16px;
+      }
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #fff;
+        padding: 10px 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
 
-        .profile-menu {
-            position: relative;
-        }
+      .navbar .left {
+        display: flex;
+        align-items: center;
+      }
 
-        .profile-photo {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-        }
+      .navbar .left a {
+        text-decoration: none;
+        font-size: 24px;
+        color: #333;
+        font-weight: bold;
+      }
 
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            right: 0;
-            background-color: #fff;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            border-radius: 5px;
-            padding: 10px;
-        }
+      .navbar .right {
+        display: flex;
+        align-items: center;
+      }
 
-        .dropdown-menu a {
-            text-decoration: none;
-            color: #333;
-            display: block;
-            padding: 5px 10px;
-        }
+      .navbar .right a {
+        text-decoration: none;
+        margin-left: 20px;
+        color: #333;
+        font-size: 18px;
+      }
 
-        .dropdown-menu a:hover {
-            background-color: rgba(64, 115, 255, 0.1);
-        }
+      .profile-menu {
+        position: relative;
+      }
 
-        .content {
-            flex: 1; /* Permet à la section de contenu de prendre tout l'espace disponible */
-            padding: 20px; /* Ajoute de l'espace autour du contenu */
-        }
+      .profile-photo {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        cursor: pointer;
+      }
 
-        footer {
-            text-align: center;
-            padding: 20px;
-            background-color: #f8f8f8;
-        }
+      .dropdown-menu {
+        display: none;
+        position: absolute;
+        right: 0;
+        background-color: #fff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        border-radius: 5px;
+        padding: 10px;
+      }
+
+      .dropdown-menu a {
+        text-decoration: none;
+        color: #333;
+        display: block;
+        padding: 5px 10px;
+      }
+
+      .dropdown-menu a:hover {
+        background-color: rgba(64, 115, 255, 0.1);
+      }
+
+      .content {
+        flex: 1; /* Permet à la section de contenu de prendre tout l'espace disponible */
+        padding: 20px; /* Ajoute de l'espace autour du contenu */
+      }
+
+      footer {
+        text-align: center;
+        padding: 20px;
+        background-color: #f8f8f8;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Navbar -->
     <div class="navbar">
-        <div class="left">
-            <a href="{% url 'home' %}">
-                <img src="{% static 'img/logo.png' %}" alt="Logo" style="vertical-align: middle; margin-right: 8px; width: 40px; height: 40px;">
-                Drive<span style="color: rgb(64, 115, 255);">Me</span>
-            </a>
+      <div class="left">
+        <a href="{% url 'home' %}">
+          <img
+            src="{% static 'img/logo.png' %}"
+            alt="Logo"
+            style="
+              vertical-align: middle;
+              margin-right: 8px;
+              width: 40px;
+              height: 40px;
+            "
+          />
+          Drive<span style="color: rgb(64, 115, 255)">Me</span>
+        </a>
+      </div>
+      <div class="right">
+        {% if user.is_authenticated %}
+        <!-- Affiche la photo de profil de l'utilisateur connecté -->
+        <div class="profile-menu">
+          <img
+            src="{{ user.profile.photo.url }}"
+            alt="Photo de profil"
+            class="profile-photo"
+            onclick="toggleMenu()"
+          />
+          <div id="dropdownMenu" class="dropdown-menu">
+            <a href="{% url 'logout' %}">Déconnexion</a>
+          </div>
         </div>
-        <div class="right">
-            {% if user.is_authenticated %}
-                <!-- Affiche la photo de profil de l'utilisateur connecté -->
-                <div class="profile-menu">
-                    <img src="{{ user.profile.photo.url }}" alt="Photo de profil" class="profile-photo" onclick="toggleMenu()">
-                    <div id="dropdownMenu" class="dropdown-menu">
-                        <a href="{% url 'logout' %}">Déconnexion</a>
-                    </div>
-                </div>
-            {% else %}
-                <a href="{% url 'home' %}">Accueil</a>
-                <a href="{% url 'login' %}">Connexion</a>
-            {% endif %}
-        </div>
+        {% else %}
+        <a href="{% url 'home' %}">Accueil</a>
+        <a href="{% url 'login' %}">Connexion</a>
+        {% endif %}
+      </div>
     </div>
-      <!-- Sidebar -->
-  <div class="sidebar">
-    <ul>
-      <li><a href="#">Recents</a></li>
-      <li><a href="#">Browse</a></li>
-      <li><a href="#">Shared</a></li>
-    <li><a href="#" style="display: flex; align-items: center;"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 16px; height: 16px; margin-right: 5px; color: rgb(64, 115, 255);"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18.75A2.25 2.25 0 0 0 8.25 21h7.5A2.25 2.25 0 0 0 18 18.75V7.5H6v11.25zM9 7.5V6a3 3 0 0 1 6 0v1.5M4.5 7.5h15"/></svg>Recently Deleted</a></li>
-      <li><a href="#">Favourites</a></li>
-      <li><a href="#">Downloads</a></li>
-      <li><a href="{% url 'logout' %}">Déconnexion</a></li>
-    </ul>
-  </div>
-
+    {% if user.is_authenticated %}
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <ul>
+        <li><a href="#">Recents</a></li>
+        <li><a href="#">Browse</a></li>
+        <li><a href="#">Shared</a></li>
+        <li>
+          <a href="#" style="display: flex; align-items: center"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              style="
+                width: 16px;
+                height: 16px;
+                margin-right: 5px;
+                color: rgb(64, 115, 255);
+              "
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M6 18.75A2.25 2.25 0 0 0 8.25 21h7.5A2.25 2.25 0 0 0 18 18.75V7.5H6v11.25zM9 7.5V6a3 3 0 0 1 6 0v1.5M4.5 7.5h15"
+              /></svg
+            >Recently Deleted</a
+          >
+        </li>
+        <li><a href="#">Favourites</a></li>
+        <li><a href="#">Downloads</a></li>
+        <li><a href="{% url 'logout' %}">Déconnexion</a></li>
+      </ul>
+    </div>
+    {% endif %}
     <!-- Contenu principal -->
-    <div class="content">
-        {% block content %}{% endblock %}
-    </div>
+    <div class="content">{% block content %}{% endblock %}</div>
 
     <!-- Footer -->
     <footer>
-        <p>&copy; 2024 DriveMe. Tous droits réservés.</p>
+      <p>&copy; 2024 DriveMe. Tous droits réservés.</p>
     </footer>
 
     <script>
-        function toggleMenu() {
-            const menu = document.getElementById("dropdownMenu");
-            menu.style.display = menu.style.display === "block" ? "none" : "block";
+      function toggleMenu() {
+        const menu = document.getElementById("dropdownMenu");
+        menu.style.display = menu.style.display === "block" ? "none" : "block";
+      }
+
+      // Fermer le menu si on clique ailleurs sur la page
+      window.onclick = function (event) {
+        if (!event.target.matches(".profile-photo")) {
+          const menu = document.getElementById("dropdownMenu");
+          if (menu.style.display === "block") {
+            menu.style.display = "none";
+          }
         }
-        
-        // Fermer le menu si on clique ailleurs sur la page
-        window.onclick = function(event) {
-            if (!event.target.matches('.profile-photo')) {
-                const menu = document.getElementById("dropdownMenu");
-                if (menu.style.display === "block") {
-                    menu.style.display = "none";
-                }
-            }
-        }
+      };
     </script>
-</body>
+  </body>
 </html>
