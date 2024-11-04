@@ -1,3 +1,4 @@
+{% extends 'base.html' %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -9,32 +10,6 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-        }
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background-color: #c2c2c223;
-            color: white;
-            padding: 0px 0; /* Adjust this value to reduce height */
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-        }
-        .navbar .left, .navbar .right {
-            display: flex;
-        }
-        .navbar a {
-            color: rgb(0, 0, 0);
-            padding: 8px 15px; /* Adjust this value to reduce height */
-            text-decoration: none;
-            display: inline-block;
-        }
-        .navbar .right a:hover {
-            background-color: #ddd;
-            color: black;
-            border-radius: 15px;
         }
         .content {
             padding: 60px 20px;
@@ -70,18 +45,11 @@
         }
     </script>
 </head>
+
+
+
+{% block content %}
 <body>
-    <div class="navbar">
-        <div class="left">
-            <a href="#home">
-                <img src="{% static 'img/logo.png' %}" alt="Logo" style="vertical-align: middle; margin-right: 8px;width: 40px;height: 40px;text-align: left;">
-                Drive<span style="color: rgb(64, 115, 255);">Me</span>
-            </a>
-        </div>
-        <div class="right">
-            <a href="javascript:void(0);" onclick="toggleMenu()" style="font-size: 24px;">&#x22EF;</a>
-        </div>
-    </div>
     <div class="popup" id="myPopup">
         <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=PL8dZXjD8meS_WZzEKSReIBPLzKaW3HboH&index=1" target="_blank">Obtenir de l'aide</a>
     </div>
@@ -97,35 +65,4 @@
     </div>
 </body>
 </html>
-<style>
-    button {
-        cursor: pointer;
-        outline: none;
-          &.outline {
-              position: relative;
-              z-index: 3;
-              background: transparent;
-              color: #1172c4;
-              font-size: 14px;
-              border-color: #1172c4;
-              border-style: solid;
-              border-width: 2px;
-              border-radius: 22px;
-              padding: 10px 40px;
-              text-transform: uppercase;
-              transition: all 0.2s linear;
-              a {
-                  text-decoration: none;
-              }
-          }
-          &.outline:hover {
-              color: white;
-              background: #1172c4;
-              border-color: white;
-              transition: all 0.2s linear;
-          }
-          &.outline:active {
-              border-radius: 22px;
-          }
-      }
-</style>
+{% endblock %}

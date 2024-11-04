@@ -1,4 +1,6 @@
+{% extends 'base.html' %}
 {% load static %}
+{% block content %}
 <a href="#profile"></a>
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6" style="width: 24px; height: 24px; color: black;"></svg>
 <head>
@@ -117,222 +119,225 @@
     }
   </style>
 </head>
+
+
 <body>
 
   <!-- Sidebar -->
   <div class="sidebar">
     <ul>
-      <li>
-        <a href="#" style="display: flex; align-items: center;">
-          <!-- Icône Récents -->
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 16px; height: 16px; margin-right: 5px; color: rgb(64, 115, 255);">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2" />
-          </svg>
-          Récents
-        </a>
-      </li>
-      <li>
-        <a href="#" style="display: flex; align-items: center;">
-          <!-- Icône Parcourir -->
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 16px; height: 16px; margin-right: 5px; color: rgb(64, 115, 255);">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M21 10H3M21 14H3m0-4h8.25" />
-          </svg>
-          Parcourir
-        </a>
-      </li>
-      <li>
-        <a href="#" style="display: flex; align-items: center;">
-          <!-- Icône Partagé -->
-          <svg xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; margin-right: 5px;" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0,0,256,256" fill-rule="nonzero"><g fill="#4073ff" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(8.53333,8.53333)"><path d="M4.98438,3.98633c-0.55152,0.00862 -0.99193,0.46214 -0.98437,1.01367v20c0.00006,0.55226 0.44774,0.99994 1,1h20c0.36064,0.0051 0.69608,-0.18438 0.87789,-0.49587c0.18181,-0.3115 0.18181,-0.69676 0,-1.00825c-0.18181,-0.3115 -0.51725,-0.50097 -0.87789,-0.49587h-19v-19c0.0037,-0.2703 -0.10218,-0.53059 -0.29351,-0.72155c-0.19133,-0.19097 -0.45182,-0.29634 -0.72212,-0.29212zM21.99023,4.99023c-0.40692,0.00011 -0.77321,0.24676 -0.92633,0.62377c-0.15312,0.37701 -0.06255,0.80921 0.22907,1.09303l1.29297,1.29297h-4.58594c-4.40644,0 -8,3.59356 -8,8v5c-0.0051,0.36064 0.18438,0.69608 0.49587,0.87789c0.3115,0.18181 0.69676,0.18181 1.00825,0c0.3115,-0.18181 0.50097,-0.51725 0.49587,-0.87789v-5c0,-3.32556 2.67444,-6 6,-6h4.58594l-1.29297,1.29297c-0.26124,0.25082 -0.36648,0.62327 -0.27512,0.97371c0.09136,0.35044 0.36503,0.62411 0.71547,0.71547c0.35044,0.09136 0.72289,-0.01388 0.97371,-0.27512l3,-3c0.39037,-0.39053 0.39037,-1.02353 0,-1.41406l-3,-3c-0.18827,-0.19353 -0.4468,-0.30272 -0.7168,-0.30273z"></path></g></g></svg>
-          Partagé
-        </a>
-      </li>
-      <li>
-        <a href="#" style="display: flex; align-items: center;">
-          <!-- Icône Corbeille -->
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 16px; height: 16px; margin-right: 5px; color: rgb(64, 115, 255);">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18.75A2.25 2.25 0 0 0 8.25 21h7.5A2.25 2.25 0 0 0 18 18.75V7.5H6v11.25zM9 7.5V6a3 3 0 0 1 6 0v1.5M4.5 7.5h15" />
-          </svg>
-          Corbeille
-        </a>
-      </li>
-      <li>
-        <a href="#" style="display: flex; align-items: center;">
-          <!-- Icône Favorites -->
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 16px; height: 16px; margin-right: 5px; color: rgb(64, 115, 255);">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 17.25L6.75 20.25l1.5-6.25-4.75-4.75h5.875L12 3.75 14.625 9.25h5.875l-4.75 4.75 1.5 6.25L12 17.25z" />
-          </svg>
-          Favorites
-        </a>
-      </li>
-      <li>
-        <a href="#" style="display: flex; align-items: center;">
-          <!-- Icône Téléchargé -->
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 16px; height: 16px; margin-right: 5px; color: rgb(64, 115, 255);">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3.75v12.5M5.25 12l6.75 6.75L18.75 12M4.5 20.25h15" />
-          </svg>
-          Téléchargé
-        </a>
-      </li>
-      <li>
-        <a href="{% url 'logout' %}" style="display: flex; align-items: center;">
-          <!-- Icône Déconnexion -->
-          <svg fill="#4073ff" style="width: 16px; height: 16px; margin-right: 5px;"  version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
-	 viewBox="0 0 384.971 384.971" xml:space="preserve">
-<g>
-	<g id="Sign_Out">
-		<path d="M180.455,360.91H24.061V24.061h156.394c6.641,0,12.03-5.39,12.03-12.03s-5.39-12.03-12.03-12.03H12.03
-			C5.39,0.001,0,5.39,0,12.031V372.94c0,6.641,5.39,12.03,12.03,12.03h168.424c6.641,0,12.03-5.39,12.03-12.03
-			C192.485,366.299,187.095,360.91,180.455,360.91z"/>
-		<path d="M381.481,184.088l-83.009-84.2c-4.704-4.752-12.319-4.74-17.011,0c-4.704,4.74-4.704,12.439,0,17.179l62.558,63.46H96.279
-			c-6.641,0-12.03,5.438-12.03,12.151c0,6.713,5.39,12.151,12.03,12.151h247.74l-62.558,63.46c-4.704,4.752-4.704,12.439,0,17.179
-			c4.704,4.752,12.319,4.752,17.011,0l82.997-84.2C386.113,196.588,386.161,188.756,381.481,184.088z"/>
-	</g>
-	<g>
-	</g>
-	<g>
-	</g>
-	<g>
-	</g>
-	<g>
-	</g>
-	<g>
-	</g>
-	<g>
-	</g>
-</g>
-</svg>
-          Déconnexion
-        </a>
-      </li>
+      <li><a href="#">Recents</a></li>
+      <li><a href="#">Browse</a></li>
+      <li><a href="#">Shared</a></li>
+    <li><a href="#" style="display: flex; align-items: center;"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 16px; height: 16px; margin-right: 5px; color: rgb(64, 115, 255);"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18.75A2.25 2.25 0 0 0 8.25 21h7.5A2.25 2.25 0 0 0 18 18.75V7.5H6v11.25zM9 7.5V6a3 3 0 0 1 6 0v1.5M4.5 7.5h15"/></svg>Recently Deleted</a></li>
+      <li><a href="#">Favourites</a></li>
+      <li><a href="#">Downloads</a></li>
+      <li><a href="{% url 'logout' %}">Déconnexion</a></li>
     </ul>
   </div>
-  
 
   <!-- Navbar -->
-  <div class="navbar">
-    <div class="left">
-        <a href="#home">
-            <img src="{% static 'img/logo.png' %}" alt="Logo" style="vertical-align: middle; margin-right: 8px;width: 40px;height: 40px;text-align: left;">
-            Drive<span style="color: rgb(64, 115, 255);">Me</span>
-        </a>
-    </div>
-    <div class="right">
-        <a href="#warning" style="font-size: 24px;">
-            <div style="width: 24px; height: 24px; background-color: orange; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-            <span style="color: white; font-weight: bold;">!</span>
-            </div>
-        </a>
-        <a href="#success" style="font-size: 24px;">
-            <div style="width: 24px; height: 24px; background-color: green; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-            <span style="color: white; font-weight: bold;">✔</span>
-            </div>
-        </a>
-        <a href="#error" style="font-size: 24px;">
-            <div style="width: 24px; height: 24px; background-color: red; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-            <span style="color: white; font-weight: bold;">✖</span>
-            </div>
-        </a>
-        <a href="#profile">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-              </svg>
-              
-        </a>
-        
-    </div>
-</div>
+
 
   <!-- Main Content -->
-<div class="main-content">
+  <div class="main-content">
     <div class="sub-navbar">
         <div class="left">
             <input type="text" placeholder="Search..." style="width: 100%; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
         </div>
-        <div class="center">               
-          <button type="submit" class="outline">+</button>
-        </div>
-
+        <div class="sub-navbar"> <!-- bouton pour ajouter un fichier -->
+          <div class="center">
+            <a href="{% url 'upload_document' %}" class="button">+</a>
+          </div>
+      </div>
         <div class="right">Right Text</div>
     </div>
-    <h3>Yesterday</h3>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>EN</p>
-        <p>19/10/2024, 09:39</p>
+    <div class="filter">
+      <label for="type_fichier">Filtrer par type de fichier:</label>
+      <select id="type_fichier" name="type_fichier" onchange="filterDocuments(this.value)">
+          <option value="">Tous</option>
+          <option value="pdf">PDF</option>
+          <option value="docx">Word</option>
+          <option value="xlsx">Excel</option>
+          <option value="jpg,png,gif,PNG">Image</option>
+          <!-- Ajoutez d'autres types de fichiers si nécessaire -->
+      </select>
     </div>
-    <h3>Previous 7 Days</h3>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>projetpython</p>
-    </div>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>presentation tedx like</p>
-    </div>
-    <h3>Yesterday</h3>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>EN</p>
-        <p>19/10/2024, 09:39</p>
-    </div>
-    <h3>Previous 7 Days</h3>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>projetpython</p>
-    </div>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>presentation tedx like</p>
-    </div>
-    <h3>Yesterday</h3>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>EN</p>
-        <p>19/10/2024, 09:39</p>
-    </div>
-    <h3>Previous 7 Days</h3>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>projetpython</p>
-    </div>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>presentation tedx like</p>
-    </div>
-    <h3>Yesterday</h3>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>EN</p>
-        <p>19/10/2024, 09:39</p>
-    </div>
-    <h3>Previous 7 Days</h3>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>projetpython</p>
-    </div>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>presentation tedx like</p>
-    </div>
-    <h3>Yesterday</h3>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>EN</p>
-        <p>19/10/2024, 09:39</p>
-    </div>
-    <h3>Previous 7 Days</h3>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>projetpython</p>
-    </div>
-    <div class="file-item">
-        <img src="pdf-icon.png" alt="PDF">
-        <p>presentation tedx like</p>
-    </div>
+  <h1>Mes Documents</h1>
+  <div>
+    <p>Espace utilisé : {{ used_space|floatformat:1 }}  / 100 Mo</p>
+    <!-- Le reste de votre code HTML pour afficher les dossiers et documents -->
+  </div>
+  <a href="{% url 'create_folder' %}" class="button">Créer un dossier</a>
+  <table>
+    <thead>
+        <tr>
+            <th>Icône</th>
+            <th>Nom</th>
+            <th>Propriétaire</th>
+            <th>Date de Dernière Modification</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for dossier in dossiers %}
+        <tr>
+            <td>
+                <img class="folder-icon" src="{% static 'icons/folder.png' %}" alt="Dossier" />
+            </td>
+            <td>
+                <a href="{% url 'folder_documents' folder_id=dossier.id %}" class="folder-link">{{ dossier.nom }}</a>
+            </td>
+            <td>{{ dossier.proprietaire }}</td>
+            <td>{{ dossier.date_derniere_modification|date:"d M Y" }}</td>
+            <td>
+                <div class="action-menu">
+                    <button>⋮</button>
+                    <div class="dropdown-content">
+                        <a href="{% url 'upload_folder' folder_id=dossier.id %}">Télécharger un fichier</a>
+                        <a href="{% url 'rename_folder' folder_id=dossier.id %}">Renommer</a>
+                        <a href="{% url 'delete_folder' folder_id=dossier.id %}">Supprimer</a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">Aucun dossier trouvé.</td>
+        </tr>
+        {% endfor %}
+        
+        {% for document in documents %}
+        <tr>
+            <td>
+                {% if document.type_fichier == 'pdf' %}
+                    <img class="document-icon" src="{% static 'icons/pdf.png' %}" alt="{{ document.nom }}">
+                {% elif document.type_fichier == 'docx' %}
+                    <img class="document-icon" src="{% static 'icons/word.png' %}" alt="{{ document.nom }}">
+                {% elif document.type_fichier == 'xlsx' %}
+                    <img class="document-icon" src="{% static 'icons/excel.png' %}" alt="{{ document.nom }}">
+                {% elif document.type_fichier in 'jpg,png,gif,PNG' %}
+                    <img class="document-icon" src="{% static 'icons/image.png' %}" alt="{{ document.nom }}">
+                {% else %}
+                    <img class="document-icon" src="{% static 'icons/default.png' %}" alt="{{ document.nom }}"> <!-- Icône par défaut -->
+                {% endif %}
+            </td>
+            <td>{{ document.nom }}</td>
+            <td>{{ document.utilisateur.username }}</td> <!-- Remplacez 'username' par la propriété appropriée de l'utilisateur -->
+            <td>{{ document.date_ajout|date:"d M Y" }}</td>
+            <td>
+                <div class="action-menu">
+                    <button>⋮</button>
+                    <div class="dropdown-content">
+                        <a href="{% url 'rename_document' document_id=document.id %}">Renommer</a>
+                        <a href="{% url 'delete_document' document.id %}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce document ?');">Supprimer</a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">Aucun document trouvé.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+  <script>
+    function filterDocuments(selectedType) {
+        // Sélectionne tous les éléments de document
+        const documents = document.querySelectorAll('.document-card');
+    
+        // Crée une liste des types valides si plusieurs types sont sélectionnés
+        const selectedTypes = selectedType ? selectedType.split(',') : [];
+    
+        documents.forEach(doc => {
+            // Récupère le type de chaque document
+            const fileType = doc.getAttribute('data-type');
+    
+            // Affiche tous les documents si "Tous" est sélectionné, sinon filtre par type
+            if (selectedType === "" || selectedTypes.includes(fileType)) {
+                doc.style.display = "block";
+            } else {
+                doc.style.display = "none";
+            }
+        });
+    }
+  </script>
+  
     <!-- Ajouter d'autres fichiers ici -->
 </div>
+<style>
+  /* Styles du bouton */
+  .button {
+      display: inline-block;
+      padding: 10px 20px;
+      font-size: 16px;
+      color: #fff;
+      background-color: #007BFF; /* Couleur du bouton */
+      border: none;
+      border-radius: 5px;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 0.3s;
+  }
+  
+  /* Effet au survol */
+  .button:hover {
+      background-color: #0056b3;
+  }
+  .document-icon {
+    width: 20px;  /* Ajustez la largeur selon vos besoins */
+    height: auto; /* Maintient le ratio d'aspect */
+}
+.folder-icon {
+  width: 20px;  /* Ajustez la largeur selon vos besoins */
+  height: auto; /* Maintient le ratio d'aspect */
+  margin-right: 5px; /* Espacement entre l'icône et le nom du dossier */
+  vertical-align: middle; /* Aligne l'icône avec le texte */
+}
+.folder-link {
+  text-decoration: none; /* Supprime le soulignement */
+  color: black; /* Change la couleur du texte, vous pouvez choisir la couleur que vous préférez */
+  font-weight: normal; /* Vous pouvez ajuster le poids de la police */
+}
 
+.folder-link:hover {
+  text-decoration: underline; /* Ajoute un soulignement au survol, si souhaité */
+  color: darkblue; /* Change la couleur au survol, si souhaité */
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.action-menu {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.action-menu:hover .dropdown-content {
+  display: block;
+}
+
+
+</style>
 <style>
     .sub-navbar {
         position: sticky;
@@ -354,39 +359,66 @@
     .sub-navbar .right {
         text-align: right;
     }
+    .action-menu {
+      position: relative;
+      display: inline-block;
+  }
+  
+  .menu-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 20px; /* Taille du bouton */
+      padding: 0; /* Supprime le padding par défaut */
+  }
+  
+  .dropdown-content {
+      display: none; /* Masquer par défaut */
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+  }
+  
+  .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+  }
+  
+  .dropdown-content a:hover {
+      background-color: #f1f1f1;
+  }
+  
+  .action-menu:hover .dropdown-content {
+      display: block; /* Afficher le menu lorsque l'utilisateur survole le bouton */
+  }
+  
 </style>
 
+  <script>
+    // JavaScript pour afficher/masquer la modale
+    const openModalBtn = document.getElementById('openModalBtn');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const fileModal = document.getElementById('fileModal');
+
+    openModalBtn.addEventListener('click', () => {
+        fileModal.style.display = 'flex';
+    });
+
+    closeModalBtn.addEventListener('click', () => {
+        fileModal.style.display = 'none';
+    });
+
+    // Ferme la modale si on clique en dehors
+    window.addEventListener('click', (event) => {
+        if (event.target == fileModal) {
+            fileModal.style.display = 'none';
+        }
+    });
+  </script>
 </body>
 </html>
-<style>
-  button {
-      cursor: pointer;
-      outline: none;
-        &.outline {
-            position: relative;
-            z-index: 3;
-            background: transparent;
-            color: #1172c4;
-            font-size: 14px;
-            border-color: #1172c4;
-            border-style: solid;
-            border-width: 2px;
-            border-radius: 22px;
-            padding: 2px 10px;
-            text-transform: uppercase;
-            transition: all 0.2s linear;
-            a {
-                text-decoration: none;
-            }
-        }
-        &.outline:hover {
-            color: white;
-            background: #1172c4;
-            border-color: white;
-            transition: all 0.2s linear;
-        }
-        &.outline:active {
-            border-radius: 22px;
-        }
-    }
-</style>
+{% endblock %}

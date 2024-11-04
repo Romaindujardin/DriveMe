@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+{% load static %} 
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documents</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"> <!-- Ajoutez votre fichier CSS ici -->
+</head>
+<body>
+    <h1>Mes Dossiers</h1>
+    <a href="{% url 'create_folder' %}">Créer un dossier</a>
+        {% for dossier in dossiers %}
+        <div>
+            <h2>{{ dossier.nom }}</h2>
+            <a href="{% url 'upload_file' folder_id=dossier.id %}">Télécharger un fichier</a>
+            <a href="{% url 'rename_folder' folder_id=dossier.id %}">Renommer</a>
+        </div>
+        {% empty %}
+        <p>Aucun dossier trouvé.</p>
+        {% endfor %}
+            
+    <h1>Mes Documents</h1>
+    
+    <div class="filter">
+        <label for="type_fichier">Filtrer par type de fichier:</label>
+        <select id="type_fichier" name="type_fichier" onchange="filterDocuments(this.value)">
+            <option value="">Tous</option>
+            <option value="pdf">PDF</option>
+            <option value="docx">Word</option>
+            <option value="xlsx">Excel</option>
+            <!-- Ajoutez d'autres types de fichiers si nécessaire -->
+        </select>
+    </div>
+    
+    <div class="document-grid">
+        {% for document in documents %}
+            <div class="document-card">
+                <img src="{% static 'icons/'|add:document.type_fichier|add:'.png' %}" alt="{{ document.nom }}">
+                <h3>{{ document.nom }}</h3>
+                <p>Type: {{ document.type_fichier }}</p>
+                <p>Taille: {{ document.taille_fichier }} Ko</p>
+                <p>Date d'ajout: {{ document.date_ajout|date:"d M Y" }}</p>
+            </div>
+        {% empty %}
+            <p>Aucun document trouvé.</p>
+        {% endfor %}
+    </div>
+    
+    <script>
+        function filterDocuments(type) {
+            const cards = document.querySelectorAll('.document-card');
+            cards.forEach(card => {
+                if (type === "" || card.querySelector('p:nth-child(2)').textContent.includes(type)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .document-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .document-card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            width: 150px;
+            text-align: center;
+        }
+        .filter {
+            margin-bottom: 20px;
+        }
+    </style>
+</body>
+</html>

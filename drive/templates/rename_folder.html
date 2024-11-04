@@ -1,0 +1,6 @@
+<form method="POST">
+    {% csrf_token %}
+    <label for="nom">Nouveau nom :</label>
+    <input type="text" id="nom" name="nom" value="{{ folder.nom }}" required>
+    <button type="submit">Renommer</button>
+</form>
