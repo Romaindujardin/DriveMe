@@ -110,7 +110,8 @@
             <a href="{% url 'upload_document' %}" class="button">+</a>
           </div>
       </div>
-        <div class="right">Right Text</div>
+        <div class="right">  <a href="{% url 'create_folder' %}" class="button">Créer un dossier</a>
+        </div>
     </div>
     <div class="filter">
       <label for="type_fichier">Filtrer par type de fichier:</label>
@@ -124,11 +125,7 @@
       </select>
     </div>
   <h1>Mes Documents</h1>
-  <div>
-    <p>Espace utilisé : {{ used_space|floatformat:1 }}  / 100 Mo</p>
-    <!-- Le reste de votre code HTML pour afficher les dossiers et documents -->
-  </div>
-  <a href="{% url 'create_folder' %}" class="button">Créer un dossier</a>
+
   <table>
     <thead>
         <tr>
