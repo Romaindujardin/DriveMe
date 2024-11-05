@@ -1,0 +1,415 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<a href="#profile"></a>
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6" style="width: 24px; height: 24px; color: black;"></svg>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DriveMe - Accueil</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      height: 100vh;
+    }
+
+  
+
+    /* Navbar */
+    .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #f7f7f7;
+            color: white;
+            padding: 0px 0; /* Adjust this value to reduce height */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid #ddd;
+        }
+        .navbar .left, .navbar .right {
+            display: flex;
+        }
+        .navbar a {
+            color: rgb(0, 0, 0);
+            padding: 8px 15px; /* Adjust this value to reduce height */
+            text-decoration: none;
+            display: inline-block;
+        }
+        .navbar .right a:hover {
+            background-color: #ddd;
+            color: black;
+            border-radius: 15px;
+        }
+
+    /* Main content */
+    .main-content {
+      margin-top: 40px;
+      margin-left: 270px;
+      padding: 20px;
+      flex: 1;
+      background-color: #ffffff;
+    }
+
+    .file-item {
+      display: inline-block;
+      text-align: center;
+      margin: 10px;
+    }
+
+    .file-item img {
+      width: 100px;
+      height: 100px;
+    }
+
+    .file-item p {
+      margin-top: 5px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 200px;
+      }
+      .main-content {
+        margin-left: 210px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .sidebar {
+        width: 150px;
+      }
+      .main-content {
+        margin-left: 160px;
+      }
+    }
+     button {
+      cursor: pointer;
+      outline: none;
+        &.outline {
+            position: relative;
+            z-index: 3;
+            background: transparent;
+            color: #1172c4;
+            font-size: 14px;
+            border-color: #1172c4;
+            border-style: solid;
+            border-width: 2px;
+            border-radius: 22px;
+            padding: 2px 10px;
+            text-transform: uppercase;
+            transition: all 0.2s linear;
+            a {
+                text-decoration: none;
+            }
+        }
+        &.outline:hover {
+            color: white;
+            background: #1172c4;
+            border-color: white;
+            transition: all 0.2s linear;
+        }
+        &.outline:active {
+            border-radius: 22px;
+        }
+    }
+  </style>
+</head>
+
+
+<body>
+
+
+  <!-- Navbar -->
+
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="sub-navbar">
+      <div class="left" style="display: flex; gap: 10px;">
+        <input type="text" id="searchInput" placeholder="Search..." style="width: 100%; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
+    </div>
+    
+        <div class="sub-navbar"> <!-- bouton pour ajouter un fichier -->
+          <div class="center">
+            <a href="{% url 'upload_document' %}"><button class="outline">+</button></a>
+          </div>
+      </div>
+        <div class="right">  <a href="{% url 'create_folder' %}" class="button">Créer un dossier</a>
+        </div>
+    </div>
+    <div class="filter">
+      <label for="type_fichier">Filtrer par type de fichier:</label>
+      <select id="type_fichier" name="type_fichier" onchange="filterDocuments(this.value)">
+          <option value="">Tous</option>
+          <option value="pdf">PDF</option>
+          <option value="docx">Word</option>
+          <option value="xlsx">Excel</option>
+          <option value="jpg,png,gif,PNG">Image</option>
+          <!-- Ajoutez d'autres types de fichiers si nécessaire -->
+      </select>
+    </div>
+  <h1>Mes Dossiers</h1>
+
+  <table>
+    <thead>
+        <tr>
+            <th>Icône</th>
+            <th>Nom</th>
+            <th>Propriétaire</th>
+            <th>Date de Dernière Modification</th>
+            <th>Taille</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for dossier in dossiers %}
+        <tr>
+            <td>
+                <img class="folder-icon" src="{% static 'icons/folder.png' %}" alt="Dossier" />
+            </td>
+            <td>
+                <a href="{% url 'folder_documents' folder_id=dossier.id %}" class="folder-link">{{ dossier.nom }}</a>
+            </td>
+            <td>{{ dossier.utilisateur.username}}</td>
+            <td>{{ dossier.date_creation|date:"d M Y" }}</td>
+            <td>---</td> <!-- Cellule vide pour la taille des dossiers -->
+            <td>
+                <div class="action-menu">
+                    <button>⋮</button>
+                    <div class="dropdown-content">
+                        <a href="{% url 'upload_folder' folder_id=dossier.id %}">Télécharger un fichier</a>
+                        <a href="{% url 'rename_folder' folder_id=dossier.id %}">Renommer</a>
+                        <a href="{% url 'delete_folder' folder_id=dossier.id %}">Supprimer</a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">Aucun dossier trouvé.</td>
+        </tr>
+        {% endfor %}
+
+    </tbody>
+</table>
+
+
+  <script>
+    function filterDocuments(selectedType) {
+        // Sélectionne tous les éléments de document
+        const documents = document.querySelectorAll('.document-card');
+    
+        // Crée une liste des types valides si plusieurs types sont sélectionnés
+        const selectedTypes = selectedType ? selectedType.split(',') : [];
+    
+        documents.forEach(doc => {
+            // Récupère le type de chaque document
+            const fileType = doc.getAttribute('data-type');
+    
+            // Affiche tous les documents si "Tous" est sélectionné, sinon filtre par type
+            if (selectedType === "" || selectedTypes.includes(fileType)) {
+                doc.style.display = "block";
+            } else {
+                doc.style.display = "none";
+            }
+        });
+    }
+
+// Fonction de filtrage des documents et dossiers avec recherche partielle
+function searchItems(searchTerm) {
+  const rows = document.querySelectorAll('.document-card, .folder-link');
+  const lowerCaseSearchTerm = searchTerm.toLowerCase();
+
+  rows.forEach(row => {
+      // Récupère le texte du nom du document ou dossier en minuscule
+      const itemName = row.textContent.toLowerCase();
+
+      // Affiche la ligne si une partie du terme est trouvée dans le nom du document ou dossier
+      if (itemName.includes(lowerCaseSearchTerm)) {
+          if (row.classList.contains('document-card')) {
+              row.style.display = "table-row"; // Affiche la ligne pour les documents
+          } else {
+              row.closest('tr').style.display = "table-row"; // Affiche la ligne pour les dossiers
+          }
+      } else {
+          if (row.classList.contains('document-card')) {
+              row.style.display = "none"; // Masque la ligne pour les documents
+          } else {
+              row.closest('tr').style.display = "none"; // Masque la ligne pour les dossiers
+          }
+      }
+  });
+}
+
+// Écouteur d'événement pour la saisie dans le champ de recherche
+document.getElementById("searchInput").addEventListener("input", function() {
+  const searchTerm = this.value;
+  searchItems(searchTerm); // Filtre les documents et dossiers en temps réel
+});
+
+  </script>
+  
+    <!-- Ajouter d'autres fichiers ici -->
+</div>
+<style>
+  /* Styles du bouton */
+  .button {
+      display: inline-block;
+      padding: 10px 20px;
+      font-size: 16px;
+      color: #fff;
+      background-color: #007BFF; /* Couleur du bouton */
+      border: none;
+      border-radius: 5px;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 0.3s;
+  }
+  
+  /* Effet au survol */
+  .button:hover {
+      background-color: #0056b3;
+  }
+  .document-icon {
+    width: 20px;  /* Ajustez la largeur selon vos besoins */
+    height: auto; /* Maintient le ratio d'aspect */
+}
+.folder-icon {
+  width: 20px;  /* Ajustez la largeur selon vos besoins */
+  height: auto; /* Maintient le ratio d'aspect */
+  margin-right: 5px; /* Espacement entre l'icône et le nom du dossier */
+  vertical-align: middle; /* Aligne l'icône avec le texte */
+}
+.folder-link {
+  text-decoration: none; /* Supprime le soulignement */
+  color: black; /* Change la couleur du texte, vous pouvez choisir la couleur que vous préférez */
+  font-weight: normal; /* Vous pouvez ajuster le poids de la police */
+}
+
+.folder-link:hover {
+  text-decoration: underline; /* Ajoute un soulignement au survol, si souhaité */
+  color: darkblue; /* Change la couleur au survol, si souhaité */
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.action-menu {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.action-menu:hover .dropdown-content {
+  display: block;
+}
+
+
+</style>
+<style>
+    .sub-navbar {
+        position: sticky;
+        top: 0;
+        background-color: #ffffff;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 999;
+    }
+    .sub-navbar .left, .sub-navbar .center, .sub-navbar .right {
+        flex: 1;
+        text-align: center;
+    }
+    .sub-navbar .left {
+        text-align: left;
+    }
+    .sub-navbar .right {
+        text-align: right;
+    }
+    .action-menu {
+      position: relative;
+      display: inline-block;
+  }
+  
+  .menu-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 20px; /* Taille du bouton */
+      padding: 0; /* Supprime le padding par défaut */
+  }
+  
+  .dropdown-content {
+      display: none; /* Masquer par défaut */
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+  }
+  
+  .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+  }
+  
+  .dropdown-content a:hover {
+      background-color: #f1f1f1;
+  }
+  
+  .action-menu:hover .dropdown-content {
+      display: block; /* Afficher le menu lorsque l'utilisateur survole le bouton */
+  }
+  
+</style>
+
+  <script>
+    // JavaScript pour afficher/masquer la modale
+    const openModalBtn = document.getElementById('openModalBtn');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const fileModal = document.getElementById('fileModal');
+
+    openModalBtn.addEventListener('click', () => {
+        fileModal.style.display = 'flex';
+    });
+
+    closeModalBtn.addEventListener('click', () => {
+        fileModal.style.display = 'none';
+    });
+
+    // Ferme la modale si on clique en dehors
+    window.addEventListener('click', (event) => {
+        if (event.target == fileModal) {
+            fileModal.style.display = 'none';
+        }
+    });
+  </script>
+</body>
+</html>
+{% endblock %}
