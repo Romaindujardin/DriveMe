@@ -1,29 +1,83 @@
 <!-- folder_documents.html -->
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ dossier.nom }} - Fichiers</title>
-</head>
-<body>
-    <button onclick="goBack()">Retour</button>
-    <h1> {{ dossier.nom }}</h1>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+      }
+      .container {
+        width: 80%;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        color: #333;
+      }
+      button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        margin-bottom: 20px;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+      li {
+        background-color: #f9f9f9;
+        margin: 10px 0;
+        padding: 10px;
+        border: 1px solid #ddd;
+      }
+      a {
+        color: #007bff;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      p {
+        color: #666;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <button onclick="goBack()">Retour</button>
+      <h1>{{ dossier.nom }}</h1>
 
-    {% if documents %}
-        <ul>
-            {% for document in documents %}
-                <li>{{ document.nom }} - <a href="{% url 'download_file' document.id %}">Télécharger</a></li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>Aucun fichier trouvé dans ce dossier.</p>
-    {% endif %}
+      {% if documents %}
+      <ul>
+        {% for document in documents %}
+        <li>
+          {{ document.nom }} -
+          <a href="{% url 'download_file' document.id %}">Télécharger</a>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p>Aucun fichier trouvé dans ce dossier.</p>
+      {% endif %}
+    </div>
 
-<script>
-    function goBack() {
+    <script>
+      function goBack() {
         window.history.back();
-    }
-</script>
-</body>
+      }
+    </script>
+  </body>
 </html>
