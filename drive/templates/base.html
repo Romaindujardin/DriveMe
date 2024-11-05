@@ -126,8 +126,24 @@
   </head>
   <body>
     <!-- Navbar -->
+    
     <div class="navbar">
       <div class="left">
+        {% if user.is_authenticated %}
+        <a href="{% url 'document_list' %}">
+          <img
+            src="{% static 'img/logo.png' %}"
+            alt="Logo"
+            style="
+              vertical-align: middle;
+              margin-right: 8px;
+              width: 40px;
+              height: 40px;
+            "
+          />
+          Drive<span style="color: rgb(64, 115, 255)">Me</span>
+        </a>
+        {% else %}
         <a href="{% url 'home' %}">
           <img
             src="{% static 'img/logo.png' %}"
@@ -141,6 +157,7 @@
           />
           Drive<span style="color: rgb(64, 115, 255)">Me</span>
         </a>
+        {% endif %}
       </div>
       <div class="right">
         {% if user.is_authenticated %}
