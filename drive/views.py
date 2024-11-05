@@ -64,11 +64,22 @@ def home_view(request):
 @login_required 
 def files_view(request):
     documents = Document.objects.filter(utilisateur=request.user, dossier__isnull=True)
-    dossiers = Dossier.objects.filter(utilisateur=request.user)
     used_space = get_user_storage_usage(request.user) / (1024 * 1024)
     
     return render(request, 'files.html', {
         'documents': documents,
+        'used_space': used_space
+    })
+
+@login_required
+def folder_view(request):
+    dossiers = Dossier.objects.filter(utilisateur=request.user)
+    documents = Document.objects.filter(utilisateur=request.user)
+    used_space = get_user_storage_usage(request.user) / (1024 * 1024)
+    
+    return render(request, 'folder.html', {
+        'dossiers': dossiers,
+        'documents': documents, 
         'used_space': used_space
     })
 
