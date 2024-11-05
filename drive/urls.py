@@ -12,6 +12,7 @@ urlpatterns = [
     path('home/', views.home_view, name='home'),
     path('main/', views.main_view, name='main'),  # Assure-toi d'avoir cette vue
     path('logout/', views.logout_view, name='logout'),
+    path('files/', views.files_view, name='files'),
     path('documents/', views.document_list, name='document_list'),
     path('create-folder/', create_folder, name='create_folder'),
     path('delete-folder/<int:folder_id>/', delete_folder, name='delete_folder'),

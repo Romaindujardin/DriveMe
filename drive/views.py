@@ -61,6 +61,17 @@ def signin_view(request):
 def home_view(request):
     return render(request, 'home.html')
 
+@login_required 
+def files_view(request):
+    documents = Document.objects.filter(utilisateur=request.user, dossier__isnull=True)
+    dossiers = Dossier.objects.filter(utilisateur=request.user)
+    used_space = get_user_storage_usage(request.user) / (1024 * 1024)
+    
+    return render(request, 'files.html', {
+        'documents': documents,
+        'used_space': used_space
+    })
+
 def upload_file(request):
     if request.method == 'POST':
         title = request.POST.get('title')

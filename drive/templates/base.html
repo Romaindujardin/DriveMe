@@ -185,7 +185,10 @@
     <div class="sidebar">
       <ul>
         <li>
-          <a href="#" style="display: flex; align-items: center">
+          <a
+            href="{% url 'document_list' %}"
+            style="display: flex; align-items: center"
+          >
             <!-- Icône Récents -->
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -234,45 +237,10 @@
             Parcourir
           </a>
         </li>
+
         <li>
           <a href="#" style="display: flex; align-items: center">
-            <!-- Icône Partagé -->
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              style="width: 16px; height: 16px; margin-right: 5px"
-              xmlns:xlink="http://www.w3.org/1999/xlink"
-              viewBox="0,0,256,256"
-              fill-rule="nonzero"
-            >
-              <g
-                fill="#4073ff"
-                fill-rule="nonzero"
-                stroke="none"
-                stroke-width="1"
-                stroke-linecap="butt"
-                stroke-linejoin="miter"
-                stroke-miterlimit="10"
-                stroke-dasharray=""
-                stroke-dashoffset="0"
-                font-family="none"
-                font-weight="none"
-                font-size="none"
-                text-anchor="none"
-                style="mix-blend-mode: normal"
-              >
-                <g transform="scale(8.53333,8.53333)">
-                  <path
-                    d="M4.98438,3.98633c-0.55152,0.00862 -0.99193,0.46214 -0.98437,1.01367v20c0.00006,0.55226 0.44774,0.99994 1,1h20c0.36064,0.0051 0.69608,-0.18438 0.87789,-0.49587c0.18181,-0.3115 0.18181,-0.69676 0,-1.00825c-0.18181,-0.3115 -0.51725,-0.50097 -0.87789,-0.49587h-19v-19c0.0037,-0.2703 -0.10218,-0.53059 -0.29351,-0.72155c-0.19133,-0.19097 -0.45182,-0.29634 -0.72212,-0.29212zM21.99023,4.99023c-0.40692,0.00011 -0.77321,0.24676 -0.92633,0.62377c-0.15312,0.37701 -0.06255,0.80921 0.22907,1.09303l1.29297,1.29297h-4.58594c-4.40644,0 -8,3.59356 -8,8v5c-0.0051,0.36064 0.18438,0.69608 0.49587,0.87789c0.3115,0.18181 0.69676,0.18181 1.00825,0c0.3115,-0.18181 0.50097,-0.51725 0.49587,-0.87789v-5c0,-3.32556 2.67444,-6 6,-6h4.58594l-1.29297,1.29297c-0.26124,0.25082 -0.36648,0.62327 -0.27512,0.97371c0.09136,0.35044 0.36503,0.62411 0.71547,0.71547c0.35044,0.09136 0.72289,-0.01388 0.97371,-0.27512l3,-3c0.39037,-0.39053 0.39037,-1.02353 0,-1.41406l-3,-3c-0.18827,-0.19353 -0.4468,-0.30272 -0.7168,-0.30273z"
-                  ></path>
-                </g>
-              </g>
-            </svg>
-            Partagé
-          </a>
-        </li>
-        <li>
-          <a href="#" style="display: flex; align-items: center">
-            <!-- Icône Corbeille -->
+            <!-- Icône Dossier -->
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -289,10 +257,38 @@
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                d="M6 18.75A2.25 2.25 0 0 0 8.25 21h7.5A2.25 2.25 0 0 0 18 18.75V7.5H6v11.25zM9 7.5V6a3 3 0 0 1 6 0v1.5M4.5 7.5h15"
+                d="M3 7.5V6a3 3 0 0 1 3-3h3.75a3 3 0 0 1 2.25.938l1.5 1.5A3 3 0 0 0 15.75 6H18a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3v-7.5z"
               />
             </svg>
-            Corbeille
+            Dossier
+          </a>
+        </li>
+        <li>
+          <a
+            href="{% url 'files' %}"
+            style="display: flex; align-items: center"
+          >
+            <!-- Icône Fichier -->
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              style="
+                width: 16px;
+                height: 16px;
+                margin-right: 5px;
+                color: rgb(64, 115, 255);
+              "
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M19.5 9.75L14.25 4.5H6.75A2.25 2.25 0 0 0 4.5 6.75v10.5A2.25 2.25 0 0 0 6.75 19.5h10.5a2.25 2.25 0 0 0 2.25-2.25V9.75z"
+              />
+            </svg>
+            Fichier
           </a>
         </li>
         <li>
