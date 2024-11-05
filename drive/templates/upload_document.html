@@ -1,17 +1,55 @@
 {% load static %}
 <!-- upload_document.html -->
-
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <title>Upload Document</title>
-  </head>
-  <body>
-    <h2>Ajouter un document</h2>
-    <form method="post" enctype="multipart/form-data">
-      {% csrf_token %} {{ form.as_p }}
-      <button type="submit">Rechercher et ajouter</button>
-    </form>
-  </body>
+    <style>
+        .form-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh; /* Ajuste selon la hauteur de la sidebar */
+            margin-left: 250px; /* Ajuste selon la largeur de ta sidebar */
+        }
+        .form-content {
+            width: 100%;
+            max-width: 600px; /* Ajuste selon la taille souhaitée */
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        h2 {
+            text-align: center;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <div class="form-content">
+            <h2>Ajouter un document</h2>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Rechercher et ajouter</button>
+            </form>
+        </div>
+    </div>
+</body>
 </html>

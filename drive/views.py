@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from .forms import DocumentForm
+from django.db import IntegrityError
+from django.http import HttpResponse
 from django.http import FileResponse
 from .models import Dossier, Document
 from django.core.exceptions import ValidationError
@@ -16,6 +18,11 @@ def logout_view(request):
     logout(request)  # Déconnecte l'utilisateur
     return redirect('home')  # Redirige vers la page d'accueil ou une autre page de ton choix
 
+
+def home(request):
+    if request.user.is_authenticated:
+        return redirect('main')  # Remplacez 'main' par le nom correct de votre URL
+    return render(request, 'home.html')  # Remplacez 'home.html' par le nom de votre template pour la page d'accueil
 
 
 def login_view(request):
@@ -78,7 +85,7 @@ def main_view(request):
 def document_list(request):
     file_type = request.GET.get('type')  # Récupère le type de fichier depuis les paramètres de l'URL
 
-    # Filtrer les documents par utilisateur, exclure ceux associés à un dossier, et éventuellement par type de fichier
+    # Filtrer les documents par utilisateur, exclure ceux associés à un dossier (dossier_id est null), et éventuellement par type de fichier
     if file_type:
         documents = Document.objects.filter(utilisateur=request.user, dossier__isnull=True, type_fichier=file_type).order_by('-date_ajout')
     else:
@@ -187,14 +194,17 @@ def upload_document(request):
             document = form.save(commit=False)
             document.utilisateur = request.user  # Associe le document à l'utilisateur connecté
             document.taille_fichier = document.fichier.size
-            document.type_fichier = document.fichier.name.split('.')[-1]  # Ext. de fichier
+            document.type_fichier = document.fichier.name.split('.')[-1]  # Extension de fichier
+
+            # Utiliser le nom du fichier pour le champ `nom`
+            document.nom = document.fichier.name  # Attribue le nom du fichier
 
             # Créer un dossier pour chaque utilisateur dans le répertoire de stockage
             user_directory = os.path.join(settings.MEDIA_ROOT, request.user.username)
             os.makedirs(user_directory, exist_ok=True)
-            
+
             # Enregistrer le fichier dans le dossier de l'utilisateur
-            document.fichier.name = f"{request.user.username}/{document.fichier.name}"
+            document.fichier.name = os.path.join(request.user.username, document.fichier.name)
             document.save()
 
             return redirect('document_list')  # Redirige vers une vue listant les documents
@@ -202,7 +212,6 @@ def upload_document(request):
     else:
         form = DocumentForm()
     return render(request, 'upload_document.html', {'form': form})
-
 @login_required
 def rename_document(request, document_id):
     document = get_object_or_404(Document, id=document_id)
