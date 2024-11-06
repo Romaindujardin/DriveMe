@@ -138,6 +138,8 @@
         <div class="sub-navbar"> <!-- bouton pour ajouter un fichier -->
           <div class="center">
             <a href="{% url 'upload_document' %}"><button class="outline">+</button></a>
+            <!-- <a href="#"><button class="outline" id="testpreview">testpreview</button></a> -->
+            <a href="{% url 'stats'%}"><button class="outline" id="stats">STATS</button></a>
           </div>
       </div>
         <div class="right">  <a href="{% url 'create_folder' %}" class="button">Créer un dossier</a>
@@ -155,8 +157,8 @@
       </select>
     </div>
   <h1>Mes Documents</h1>
-
-  <table>
+<!--Tr pour la ligne td pour la colone-->
+  <table id="document-table">
     <thead>
         <tr>
             <th>Icône</th>
@@ -167,7 +169,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for dossier in dossiers %}
+        {% for dossier in dossiers %} <!--Une ligne pour chaque documents-->
         <tr>
             <td>
                 <img class="folder-icon" src="{% static 'icons/folder.png' %}" alt="Dossier" />
@@ -194,7 +196,7 @@
         </tr>
         {% endfor %}
         
-        {% for document in documents %}
+        {% for document in documents %} <!--Une ligne est générée pour chaque fichier(dissier)-->
         <tr>
             <td>
                 {% if document.type_fichier == 'pdf' %}
@@ -206,8 +208,9 @@
                 {% elif document.type_fichier in 'jpg,png,gif,PNG' %}
                     <img class="document-icon" src="{% static 'icons/image.png' %}" alt="{{ document.nom }}">
                 {% else %}
-                    <img class="document-icon" src="{% static 'icons/default.png' %}" alt="{{ document.nom }}"> <!-- Icône par défaut -->
+                    <img class="document-icon" src="{% static 'icons/default.png' %}" alt="{{ document.nom }}"> 
                 {% endif %}
+
             </td>
             <td>{{ document.nom }}</td>
             <td>{{ document.utilisateur.username }}</td> <!-- Remplacez 'username' par la propriété appropriée de l'utilisateur -->
@@ -250,6 +253,14 @@
             }
         });
     }
+  </script>
+<!--Script pour la preview des documents EMPTY--> 
+  <script>
+    function preview(){
+      console.log("debug");
+
+    }
+    document.getElementById("testpreview").addEventListener("click", preview); 
   </script>
   
     <!-- Ajouter d'autres fichiers ici -->
