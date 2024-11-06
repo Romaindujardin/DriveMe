@@ -158,105 +158,105 @@
     </div>
   <h1>Mes Documents récents</h1>
 <!--Tr pour la ligne td pour la colone-->
-  <table id="document-table">
-    <thead>
-        <tr>
-            <th>Icône</th>
-            <th>Nom</th>
-            <th>Propriétaire</th>
-            <th>Date de Dernière Modification</th>
-            <th>Taille</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for dossier in dossiers %} <!--Une ligne pour chaque documents-->
-        <tr>
-            <td>
-                <img class="folder-icon" src="{% static 'icons/folder.png' %}" alt="Dossier" />
-            </td>
-            <td>
-                <a href="{% url 'folder_documents' folder_id=dossier.id %}" class="folder-link">{{ dossier.nom }}</a>
-            </td>
-            <td>{{ dossier.utilisateur.username}}</td>
-            <td>{{ dossier.date_creation|date:"d M Y" }}</td>
-            <td>---</td> <!-- Cellule vide pour la taille des dossiers -->
-            <td>
-                <div class="action-menu">
-                    <button>⋮</button>
-                    <div class="dropdown-content">
-                        <a href="{% url 'upload_folder' folder_id=dossier.id %}">Télécharger un fichier</a>
-                        <a href="{% url 'rename_folder' folder_id=dossier.id %}">Renommer</a>
-                        <a href="{% url 'delete_folder' folder_id=dossier.id %}">Supprimer</a>
-                    </div>
-                </div>
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="6">Aucun dossier trouvé.</td>
-        </tr>
-        {% endfor %}
-        
-        {% for document in documents %} <!--Une ligne est générée pour chaque fichier(dissier)-->
-        <tr>
-            <td>
-                {% if document.type_fichier == 'pdf' %}
-                    <img class="document-icon" src="{% static 'icons/pdf.png' %}" alt="{{ document.nom }}">
-                {% elif document.type_fichier == 'docx' %}
-                    <img class="document-icon" src="{% static 'icons/word.png' %}" alt="{{ document.nom }}">
-                {% elif document.type_fichier == 'xlsx' %}
-                    <img class="document-icon" src="{% static 'icons/excel.png' %}" alt="{{ document.nom }}">
-                {% elif document.type_fichier in 'jpg,png,gif,PNG' %}
-                    <img class="document-icon" src="{% static 'icons/image.png' %}" alt="{{ document.nom }}">
-                {% else %}
-                    <img class="document-icon" src="{% static 'icons/default.png' %}" alt="{{ document.nom }}"> 
-                {% endif %}
+<table>
+  <thead>
+      <tr>
+          <th>Icône</th>
+          <th>Nom</th>
+          <th>Propriétaire</th>
+          <th>Date de Dernière Modification</th>
+          <th>Taille</th>
+          <th>Actions</th>
+      </tr>
+  </thead>
+  <tbody>
+      {% for dossier in dossiers %}
+      <tr>
+          <td>
+              <img class="folder-icon" src="{% static 'icons/folder.png' %}" alt="Dossier" />
+          </td>
+          <td>
+              <a href="{% url 'folder_documents' folder_id=dossier.id %}" class="folder-link">{{ dossier.nom }}</a>
+          </td>
+          <td>{{ dossier.utilisateur.username}}</td>
+          <td>{{ dossier.date_creation|date:"d M Y" }}</td>
+          <td>---</td> <!-- Cellule vide pour la taille des dossiers -->
+          <td>
+              <div class="action-menu">
+                  <button>⋮</button>
+                  <div class="dropdown-content">
+                      <a href="{% url 'upload_folder' folder_id=dossier.id %}">Télécharger un fichier</a>
+                      <a href="{% url 'rename_folder' folder_id=dossier.id %}">Renommer</a>
+                      <a href="{% url 'delete_folder' folder_id=dossier.id %}">Supprimer</a>
+                  </div>
+              </div>
+          </td>
+      </tr>
+      {% empty %}
+      <tr>
+          <td colspan="6">Aucun dossier trouvé.</td>
+      </tr>
+      {% endfor %}
 
-            </td>
-            <td>{{ document.nom }}</td>
-            <td>{{ document.utilisateur.username }}</td> <!-- Remplacez 'username' par la propriété appropriée de l'utilisateur -->
-            <td>{{ document.date_ajout|date:"d M Y" }}</td>
-            <td>{{ document.taille_fichier_mo|floatformat:2 }} Ko</td> <!-- Affiche la taille en Mo avec deux décimales -->
-            <td>
-                <div class="action-menu">
-                    <button>⋮</button>
-                    <div class="dropdown-content">
-                        <a href="{% url 'rename_document' document_id=document.id %}">Renommer</a>
-                        <a href="{% url 'delete_document' document.id %}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce document ?');">Supprimer</a>
-                    </div>
-                </div>
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="6">Aucun document trouvé.</td>
-        </tr>
-        {% endfor %}
-    </tbody>
+      {% for document in documents %}
+      <tr class="document-card" data-type="{{ document.type_fichier }}">
+          <td>
+              {% if document.type_fichier == 'pdf' %}
+                  <img class="document-icon" src="{% static 'icons/pdf.png' %}" alt="{{ document.nom }}">
+              {% elif document.type_fichier == 'docx' %}
+                  <img class="document-icon" src="{% static 'icons/word.png' %}" alt="{{ document.nom }}">
+              {% elif document.type_fichier == 'xlsx' %}
+                  <img class="document-icon" src="{% static 'icons/excel.png' %}" alt="{{ document.nom }}">
+              {% elif document.type_fichier in 'jpg,png,gif,PNG' %}
+                  <img class="document-icon" src="{% static 'icons/image.png' %}" alt="{{ document.nom }}">
+              {% else %}
+                  <img class="document-icon" src="{% static 'icons/default.png' %}" alt="{{ document.nom }}"> <!-- Icône par défaut -->
+              {% endif %}
+          </td>
+          <td>{{ document.nom }}</td>
+          <td>{{ document.utilisateur.username }}</td> <!-- Remplacez 'username' par la propriété appropriée de l'utilisateur -->
+          <td>{{ document.date_ajout|date:"d M Y" }}</td>
+          <td>{{ document.taille_fichier_mo|floatformat:2 }} Ko</td> <!-- Affiche la taille en Mo avec deux décimales -->
+          <td>
+              <div class="action-menu">
+                  <button>⋮</button>
+                  <div class="dropdown-content">
+                      <a href="{% url 'rename_document' document_id=document.id %}">Renommer</a>
+                      <a href="{% url 'delete_document' document.id %}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce document ?');">Supprimer</a>
+                  </div>
+              </div>
+          </td>
+      </tr>
+      {% empty %}
+      <tr>
+          <td colspan="6">Aucun document trouvé.</td>
+      </tr>
+      {% endfor %}
+  </tbody>
 </table>
 
 
-  <script>
-    function filterDocuments(selectedType) {
-        // Sélectionne tous les éléments de document
-        const documents = document.querySelectorAll('.document-card');
-    
-        // Crée une liste des types valides si plusieurs types sont sélectionnés
-        const selectedTypes = selectedType ? selectedType.split(',') : [];
-    
-        documents.forEach(doc => {
-            // Récupère le type de chaque document
-            const fileType = doc.getAttribute('data-type');
-    
-            // Affiche tous les documents si "Tous" est sélectionné, sinon filtre par type
-            if (selectedType === "" || selectedTypes.includes(fileType)) {
-                doc.style.display = "block";
-            } else {
-                doc.style.display = "none";
-            }
-        });
-    }
+<script>
+  function filterDocuments(selectedType) {
+      // Sélectionne tous les éléments de document
+      const documents = document.querySelectorAll('.document-card');
+  
+      // Crée une liste des types valides si plusieurs types sont sélectionnés
+      const selectedTypes = selectedType ? selectedType.split(',') : [];
+  
+      documents.forEach(doc => {
+          // Récupère le type de chaque document
+          const fileType = doc.getAttribute('data-type');
+  
+          // Affiche tous les documents si "Tous" est sélectionné, sinon filtre par type
+          if (selectedType === "" || selectedTypes.includes(fileType)) {
+              doc.style.display = "block";
+          } else {
+              doc.style.display = "none";
+          }
+      });
+  }
+
   </script>
 <!--Script pour la preview des documents EMPTY--> 
   <script>
