@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graphiques</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Statistiques</h1>
+    </header>
+    <main>
+        <p>Voici vos statistiques</p>
+        <div>
+            <h2>Graphique 1</h2>
+            <img src="{{ graph }}" alt="Graphique des statistiques">
+        </div>
+        <div>
+            <h2>Graphique 2</h2>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2023 Your Company</p>
+    </footer>
+</body>
+</html>

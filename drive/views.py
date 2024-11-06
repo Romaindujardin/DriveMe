@@ -8,14 +8,18 @@ from .forms import DocumentForm
 from django.db import IntegrityError
 from django.http import HttpResponse
 from django.http import FileResponse
+from django.http import HttpResponse
 from .models import Dossier, Document
 from django.core.exceptions import ValidationError
 from django.contrib import messages
 import os
 from django.db.models import Sum
 from django.conf import settings
-from django.db.models import Q
-from django.shortcuts import render
+import matplotlib.pyplot as plt
+import io
+import base64
+import matplotlib
+matplotlib.use('Agg')  # Utiliser le backend non interactif pour matplotlib
 def logout_view(request):
     logout(request)  # Déconnecte l'utilisateur
     return redirect('home')  # Redirige vers la page d'accueil ou une autre page de ton choix
@@ -63,73 +67,7 @@ def signin_view(request):
 def home_view(request):
     return render(request, 'home.html')
 
-@login_required 
-def files_view(request):
-    documents = Document.objects.filter(utilisateur=request.user, dossier__isnull=True)
-    used_space = get_user_storage_usage(request.user) / (1024 * 1024)
-    
-    return render(request, 'files.html', {
-        'documents': documents,
-        'used_space': used_space
-    })
-
-@login_required
-def folder_view(request):
-    dossiers = Dossier.objects.filter(utilisateur=request.user)
-    documents = Document.objects.filter(utilisateur=request.user)
-    used_space = get_user_storage_usage(request.user) / (1024 * 1024)
-    
-    return render(request, 'folder.html', {
-        'dossiers': dossiers,
-        'documents': documents, 
-        'used_space': used_space
-    })
-
-
-
-def search_documents(request):
-    used_space = get_user_storage_usage(request.user) / (1024 * 1024)
-    query = request.GET.get('q', '')
-    file_type = request.GET.get('type', '')
-    
-    # Initialiser avec des QuerySets vides
-    documents = Document.objects.none()
-    dossiers = Dossier.objects.none()
-    
-    # Ne faire la recherche que si une requête est présente
-    if query:
-        documents = Document.objects.all()
-        dossiers = Dossier.objects.all()
-        
-        # Appliquer les filtres de recherche
-        documents = documents.filter(
-            Q(nom__icontains=query) |
-            Q(utilisateur__username__icontains=query)
-        )
-        dossiers = dossiers.filter(nom__icontains=query)
-        
-        # Appliquer le filtre de type si spécifié
-        if file_type:
-            if file_type == 'image':
-                documents = documents.filter(
-                    type_fichier__in=['jpg', 'png', 'gif', 'PNG']
-                )
-            else:
-                documents = documents.filter(type_fichier=file_type)
-    
-    context = {
-        'documents': documents,
-        'dossiers': dossiers,
-        'query': query,
-        'file_type': file_type,
-        'show_results': bool(query)  # Nouveau flag pour le template
-    }
-    
-    context['used_space'] = used_space
-    return render(request, 'search.html', context)
-
-
-def upload_file(request):
+def upload_file(request): #NE MARCHE PAS 
     if request.method == 'POST':
         title = request.POST.get('title')
         file = request.FILES.get('file')
@@ -300,3 +238,60 @@ def delete_document(request, document_id):
     document.delete()
     messages.success(request, 'Document supprimé avec succès.')
     return redirect('document_list')
+
+@login_required
+def stats(request):
+    # Récupérer les données depuis la base de données
+    documents = Document.objects.all()
+    
+    # Compter le nombre de fichiers par type
+    file_type_counts = {}
+    for doc in documents:
+        if doc.fichier:  # Vérifiez que le fichier n'est pas None
+            file_type = doc.fichier.name.split('.')[-1]
+            if file_type in file_type_counts:
+                file_type_counts[file_type] += 1
+            else:
+                file_type_counts[file_type] = 1
+    
+    # Générer l'histogramme avec Matplotlib
+    plt.figure()
+    plt.bar(file_type_counts.keys(), file_type_counts.values())
+    plt.xlabel('Type de fichier')
+    plt.ylabel('Nombre de fichiers')
+    plt.title('Nombre de fichiers par type de fichier')
+    
+    # Sauvegarder le graphique dans un buffer en mémoire
+    buffer = io.BytesIO()
+    plt.savefig(buffer, format='png')
+    plt.close()
+    buffer.seek(0)
+    
+    # Convertir l'image en URL de données et l'insérer dans le HTML
+    image_png = buffer.getvalue()
+    image_data = base64.b64encode(image_png).decode('utf-8')
+    image_uri = f"data:image/png;base64,{image_data}"
+
+    return render(request, 'stats.html', {'graph': image_uri})
+# def stats(request):
+#     # Création d'un graphique avec matplotlib
+#     plt.figure()
+#     x = [1, 2, 3, 4, 5]
+#     y = [10, 15, 13, 17, 19]
+#     plt.plot(x, y)
+#     plt.xlabel('Temps')
+#     plt.ylabel('Valeur')
+#     plt.title('Statistiques d"upload')
+    
+#     # Sauvegarder le graphique dans un buffer en mémoire
+#     buffer = io.BytesIO()
+#     plt.savefig(buffer, format='png')
+#     plt.close()
+#     buffer.seek(0)
+    
+#     # Convertir l'image en URL de données et l'insérer dans le HTML
+#     image_png = buffer.getvalue()
+#     image_data = base64.b64encode(image_png).decode('utf-8')
+#     image_uri = f"data:image/png;base64,{image_data}"
+
+#     return render(request, 'stats.html', {'graph': image_uri})   
