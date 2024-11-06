@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from .forms import DocumentForm
+from django.db.models import Q
 from django.db import IntegrityError
 from django.http import HttpResponse
 from django.http import FileResponse
@@ -295,3 +296,68 @@ def stats(request):
 #     image_uri = f"data:image/png;base64,{image_data}"
 
 #     return render(request, 'stats.html', {'graph': image_uri})   
+@login_required 
+def files_view(request):
+    documents = Document.objects.filter(utilisateur=request.user, dossier__isnull=True)
+    used_space = get_user_storage_usage(request.user) / (1024 * 1024)
+    
+    return render(request, 'files.html', {
+        'documents': documents,
+        'used_space': used_space
+    })
+
+@login_required
+def folder_view(request):
+    dossiers = Dossier.objects.filter(utilisateur=request.user)
+    documents = Document.objects.filter(utilisateur=request.user)
+    used_space = get_user_storage_usage(request.user) / (1024 * 1024)
+    
+    return render(request, 'folder.html', {
+        'dossiers': dossiers,
+        'documents': documents, 
+        'used_space': used_space
+    })
+
+
+
+def search_documents(request):
+    used_space = get_user_storage_usage(request.user) / (1024 * 1024)
+    query = request.GET.get('q', '')
+    file_type = request.GET.get('type', '')
+    
+    # Initialiser avec des QuerySets vides
+    documents = Document.objects.none()
+    dossiers = Dossier.objects.none()
+    
+    # Ne faire la recherche que si une requête est présente
+    if query:
+        documents = Document.objects.all()
+        dossiers = Dossier.objects.all()
+        
+        # Appliquer les filtres de recherche
+        documents = documents.filter(
+            Q(nom__icontains=query) |
+            Q(utilisateur__username__icontains=query)
+        )
+        dossiers = dossiers.filter(nom__icontains=query)
+        
+        # Appliquer le filtre de type si spécifié
+        if file_type:
+            if file_type == 'image':
+                documents = documents.filter(
+                    type_fichier__in=['jpg', 'png', 'gif', 'PNG']
+                )
+            else:
+                documents = documents.filter(type_fichier=file_type)
+    
+    context = {
+        'documents': documents,
+        'dossiers': dossiers,
+        'query': query,
+        'file_type': file_type,
+        'show_results': bool(query)  # Nouveau flag pour le template
+    }
+    
+    context['used_space'] = used_space
+    return render(request, 'search.html', context)
+
