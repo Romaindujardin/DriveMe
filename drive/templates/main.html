@@ -207,7 +207,7 @@
                   <img class="document-icon" src="{% static 'icons/word.png' %}" alt="{{ document.nom }}">
               {% elif document.type_fichier == 'xlsx' %}
                   <img class="document-icon" src="{% static 'icons/excel.png' %}" alt="{{ document.nom }}">
-              {% elif document.type_fichier in 'jpg,png,gif,PNG' %}
+              {% elif document.type_fichier in 'jpg,png,gif,PNG,jpeg' %}
                   <img class="document-icon" src="{% static 'icons/image.png' %}" alt="{{ document.nom }}">
               {% else %}
                   <img class="document-icon" src="{% static 'icons/default.png' %}" alt="{{ document.nom }}"> <!-- Icône par défaut -->
@@ -221,6 +221,13 @@
               <div class="action-menu">
                   <button>⋮</button>
                   <div class="dropdown-content">
+                    {% if document.fichier %}
+                    <a href="{{ document.fichier.url }}" onclick="openPopup(this.href); return false;">
+                      ouvrir
+                    </a>
+                  {% else %}
+                    <span>Aucun fichier</span>
+                  {% endif %}
                       <a href="{% url 'rename_document' document_id=document.id %}">Renommer</a>
                       <a href="{% url 'delete_document' document.id %}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce document ?');">Supprimer</a>
                   </div>

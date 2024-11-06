@@ -375,3 +375,19 @@ def search_documents(request):
     context['used_space'] = used_space
     return render(request, 'search.html', context)
 
+from django.shortcuts import render, get_object_or_404
+from .models import Document
+
+def view_document(request, document_id):
+    # Assure-toi que cette ligne et les suivantes sont indentées correctement
+    document = get_object_or_404(Document, id=document_id)
+
+    # Autres lignes de code dans la fonction
+    file_path = os.path.join(settings.MEDIA_ROOT, document.fichier.name)
+
+    context = {
+        'document': document,
+        'file_path': file_path,
+    }
+    return render(request, 'view_document.html', context)
+
