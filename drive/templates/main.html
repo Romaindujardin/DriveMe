@@ -133,7 +133,7 @@
   <div class="main-content">
     <div class="sub-navbar">
       <div class="left" style="display: flex; gap: 10px;">
-        <input type="text" id="searchInput" placeholder="Search..." style="width: 100%; padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
+        <input type="text" id="searchInput" placeholder="Search..." style="width: 100%; padding: 5px; border: 1px solid #ddd; border-radius: 4px;" onkeyup="searchDocuments()">
     </div>
     
         <div class="sub-navbar"> <!-- bouton pour ajouter un fichier -->
@@ -256,6 +256,24 @@
                 doc.style.display = "none";
             }
         });
+    }
+    function searchDocuments() {
+        const input = document.getElementById('searchInput');
+        const filter = input.value.toLowerCase();
+        const table = document.getElementById('document-table');
+        const tr = table.getElementsByTagName('tr');
+
+        for (let i = 1; i < tr.length; i++) {
+            const td = tr[i].getElementsByTagName('td')[1];
+            if (td) {
+                const txtValue = td.textContent || td.innerText;
+                if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
     }
   </script>
 <!--Script pour la preview des documents EMPTY--> 
