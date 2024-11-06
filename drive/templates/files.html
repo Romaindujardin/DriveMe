@@ -155,7 +155,7 @@
           <!-- Ajoutez d'autres types de fichiers si nécessaire -->
       </select>
     </div>
-  <h1>Mes Documents récents</h1>
+  <h1>Mes Documents</h1>
 
   <table>
     <thead>
@@ -169,33 +169,6 @@
         </tr>
     </thead>
     <tbody>
-        {% for dossier in dossiers %}
-        <tr>
-            <td>
-                <img class="folder-icon" src="{% static 'icons/folder.png' %}" alt="Dossier" />
-            </td>
-            <td>
-                <a href="{% url 'folder_documents' folder_id=dossier.id %}" class="folder-link">{{ dossier.nom }}</a>
-            </td>
-            <td>{{ dossier.utilisateur.username}}</td>
-            <td>{{ dossier.date_creation|date:"d M Y" }}</td>
-            <td>---</td> <!-- Cellule vide pour la taille des dossiers -->
-            <td>
-                <div class="action-menu">
-                    <button>⋮</button>
-                    <div class="dropdown-content">
-                        <a href="{% url 'upload_folder' folder_id=dossier.id %}">Télécharger un fichier</a>
-                        <a href="{% url 'rename_folder' folder_id=dossier.id %}">Renommer</a>
-                        <a href="{% url 'delete_folder' folder_id=dossier.id %}">Supprimer</a>
-                    </div>
-                </div>
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="6">Aucun dossier trouvé.</td>
-        </tr>
-        {% endfor %}
 
         {% for document in documents %}
         <tr class="document-card" data-type="{{ document.type_fichier }}">

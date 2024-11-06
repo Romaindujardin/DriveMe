@@ -1,40 +1,93 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Documents Non Affiliés</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-    <button onclick="goBack()"> <--- </button>
-    <h1>Documents Non Affiliés au Dossier "{{ dossier.nom }}"</h1>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+      }
+      .container {
+        width: 80%;
+        margin: auto;
+        overflow: hidden;
+        text-align: center;
+      }
+      #main-content {
+        padding: 20px;
+        background: #fff;
+        margin-top: 20px;
+      }
+      button {
+        background: #007bff;
+        color: #fff;
+        border: 0;
+        padding: 10px 20px;
+        cursor: pointer;
+        margin: 10px;
+      }
+      button:hover {
+        background: #0056b3;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+      ul li {
+        background: #f4f4f4;
+        margin: 5px 0;
+        padding: 10px;
+        border: #ccc 1px solid;
+      }
+      form {
+        display: inline;
+      }
+      a {
+        color: #333;
+        text-decoration: none;
+      }
+      a:hover {
+        color: #77aaff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" id="main-content">
+      <button onclick="goBack()">Retour</button>
+      <a href="{% url 'create_folder' %}"><button>Créer un dossier</button></a>
+      <h1>Documents Non Affiliés au Dossier "{{ dossier.nom }}"</h1>
+      {% if documents %}
+      <ul>
+        {% for document in documents %}
+        <li>
+          {{ document.nom }} (Type: {{ document.type_fichier }}, Taille: {{
+          document.taille_fichier }} Ko)
+          <form
+            method="POST"
+            action="{% url 'affilier_document' document.id %}"
+          >
+            {% csrf_token %}
+            <input type="hidden" name="dossier_id" value="{{ dossier.id }}" />
+            <button type="submit">Ajouter</button>
+          </form>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p>Aucun document non affilié trouvé.</p>
+      {% endif %}
+    </div>
 
-    {% if documents %}
-        <ul>
-            {% for document in documents %}
-                <li>
-                    {{ document.nom }} (Type: {{ document.type_fichier }}, Taille: {{ document.taille_fichier }} Ko)
-                    <form method="POST" action="{% url 'affilier_document' document.id %}" style="display:inline;">
-                        {% csrf_token %}
-                        <input type="hidden" name="dossier_id" value="{{ dossier.id }}">
-                        <button type="submit">Ajouter</button>
-                    </form>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>Aucun document non affilié trouvé.</p>
-    {% endif %}
-
-    <a href="{% url 'create_folder' %}">Créer un dossier</a>
-
-
-<script>
-    function goBack() {
+    <script>
+      function goBack() {
         window.history.back();
-    }
-</script>
-</body>
+      }
+    </script>
+  </body>
 </html>

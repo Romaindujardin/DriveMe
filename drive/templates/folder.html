@@ -155,7 +155,7 @@
           <!-- Ajoutez d'autres types de fichiers si nécessaire -->
       </select>
     </div>
-  <h1>Mes Documents récents</h1>
+  <h1>Mes Dossiers</h1>
 
   <table>
     <thead>
@@ -197,40 +197,6 @@
         </tr>
         {% endfor %}
 
-        {% for document in documents %}
-        <tr class="document-card" data-type="{{ document.type_fichier }}">
-            <td>
-                {% if document.type_fichier == 'pdf' %}
-                    <img class="document-icon" src="{% static 'icons/pdf.png' %}" alt="{{ document.nom }}">
-                {% elif document.type_fichier == 'docx' %}
-                    <img class="document-icon" src="{% static 'icons/word.png' %}" alt="{{ document.nom }}">
-                {% elif document.type_fichier == 'xlsx' %}
-                    <img class="document-icon" src="{% static 'icons/excel.png' %}" alt="{{ document.nom }}">
-                {% elif document.type_fichier in 'jpg,png,gif,PNG' %}
-                    <img class="document-icon" src="{% static 'icons/image.png' %}" alt="{{ document.nom }}">
-                {% else %}
-                    <img class="document-icon" src="{% static 'icons/default.png' %}" alt="{{ document.nom }}"> <!-- Icône par défaut -->
-                {% endif %}
-            </td>
-            <td>{{ document.nom }}</td>
-            <td>{{ document.utilisateur.username }}</td> <!-- Remplacez 'username' par la propriété appropriée de l'utilisateur -->
-            <td>{{ document.date_ajout|date:"d M Y" }}</td>
-            <td>{{ document.taille_fichier_mo|floatformat:2 }} Ko</td> <!-- Affiche la taille en Mo avec deux décimales -->
-            <td>
-                <div class="action-menu">
-                    <button>⋮</button>
-                    <div class="dropdown-content">
-                        <a href="{% url 'rename_document' document_id=document.id %}">Renommer</a>
-                        <a href="{% url 'delete_document' document.id %}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce document ?');">Supprimer</a>
-                    </div>
-                </div>
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="6">Aucun document trouvé.</td>
-        </tr>
-        {% endfor %}
     </tbody>
 </table>
 
