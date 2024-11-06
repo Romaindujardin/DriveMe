@@ -215,25 +215,9 @@
         <li>
           <a href="{% url 'search' %}"" style="display: flex; align-items: center">
             <!-- Icône Parcourir -->
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              style="
-                width: 16px;
-                height: 16px;
-                margin-right: 5px;
-                color: rgb(64, 115, 255);
-              "
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M21 10H3M21 14H3m0-4h8.25"
-              />
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="16px" height="16px" viewBox="0,0,300,150">
+<g fill="#4073ff" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(8,8)"><path d="M19,3c-5.51172,0 -10,4.48828 -10,10c0,2.39453 0.83984,4.58984 2.25,6.3125l-7.96875,7.96875l1.4375,1.4375l7.96875,-7.96875c1.72266,1.41016 3.91797,2.25 6.3125,2.25c5.51172,0 10,-4.48828 10,-10c0,-5.51172 -4.48828,-10 -10,-10zM19,5c4.42969,0 8,3.57031 8,8c0,4.42969 -3.57031,8 -8,8c-4.42969,0 -8,-3.57031 -8,-8c0,-4.42969 3.57031,-8 8,-8z"></path></g></g>
+</svg>
             Parcourir
           </a>
         </li>
@@ -337,8 +321,7 @@
             <div style="background-color: #ddd; border-radius: 5px; overflow: hidden; width: 150px">
               <div style="width: {{ used_space|floatformat:1 }}%; background-color: rgb(64, 115, 255); height: 5px;"></div>
             </div>
-            <p>{{ used_space|floatformat:1 }}Mo utilisé</p>
-            <p>sur 100 Mo</p>
+            <p>{{ used_space|floatformat:1 }}Mo utilisé sur 100 Mo</p>
           </div>
         </li>
       </ul>
