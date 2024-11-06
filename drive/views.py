@@ -5,6 +5,11 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from .forms import DocumentForm
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+import matplotlib.pyplot as plt
+import io
+import base64
 from django.db.models import Q
 from django.db import IntegrityError
 from django.http import HttpResponse
@@ -240,40 +245,49 @@ def delete_document(request, document_id):
     messages.success(request, 'Document supprimé avec succès.')
     return redirect('document_list')
 
+
+
 @login_required
 def stats(request):
-    # Récupérer les données depuis la base de données
+    # Calcul de l'espace utilisé en Mo
+    used_space = get_user_storage_usage(request.user) / (1024 * 1024)  # Convertir en Mo
+    total_space = 100  # Espace total disponible en Mo (à ajuster selon vos besoins)
+
+    # Statistiques des types de fichiers
     documents = Document.objects.all()
-    
-    # Compter le nombre de fichiers par type
     file_type_counts = {}
     for doc in documents:
-        if doc.fichier:  # Vérifiez que le fichier n'est pas None
+        if doc.fichier:
             file_type = doc.fichier.name.split('.')[-1]
-            if file_type in file_type_counts:
-                file_type_counts[file_type] += 1
-            else:
-                file_type_counts[file_type] = 1
+            file_type_counts[file_type] = file_type_counts.get(file_type, 0) + 1
     
     # Générer l'histogramme avec Matplotlib
-    plt.figure()
+    plt.figure(figsize=(10, 6))
     plt.bar(file_type_counts.keys(), file_type_counts.values())
     plt.xlabel('Type de fichier')
     plt.ylabel('Nombre de fichiers')
     plt.title('Nombre de fichiers par type de fichier')
     
-    # Sauvegarder le graphique dans un buffer en mémoire
+    # Sauvegarder le graphique dans un buffer
     buffer = io.BytesIO()
     plt.savefig(buffer, format='png')
-    plt.close()
     buffer.seek(0)
-    
-    # Convertir l'image en URL de données et l'insérer dans le HTML
     image_png = buffer.getvalue()
-    image_data = base64.b64encode(image_png).decode('utf-8')
-    image_uri = f"data:image/png;base64,{image_data}"
+    buffer.close()
+    
+    # Encoder le graphique en base64
+    graph = base64.b64encode(image_png).decode('utf-8')
 
-    return render(request, 'stats.html', {'graph': image_uri})
+    # Préparer le contexte
+    context = {
+        'graph': f'data:image/png;base64,{graph}',
+        'used_storage': round(used_space, 2),
+        'total_storage': total_space,
+        'used_space': used_space
+
+    }
+    
+    return render(request, 'stats.html', context)
 # def stats(request):
 #     # Création d'un graphique avec matplotlib
 #     plt.figure()
