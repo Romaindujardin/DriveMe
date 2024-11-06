@@ -1,0 +1,349 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<a href="#profile"></a>
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6" style="width: 24px; height: 24px; color: black;"></svg>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DriveMe - Accueil</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      height: 100vh;
+    }
+
+  
+
+    /* Navbar */
+    .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #f7f7f7;
+            color: white;
+            padding: 0px 0; /* Adjust this value to reduce height */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid #ddd;
+        }
+        .navbar .left, .navbar .right {
+            display: flex;
+        }
+        .navbar a {
+            color: rgb(0, 0, 0);
+            padding: 8px 15px; /* Adjust this value to reduce height */
+            text-decoration: none;
+            display: inline-block;
+        }
+        .navbar .right a:hover {
+            background-color: #ddd;
+            color: black;
+            border-radius: 15px;
+        }
+
+    /* Main content */
+    .main-content {
+      margin-top: 40px;
+      margin-left: 270px;
+      padding: 20px;
+      flex: 1;
+      background-color: #ffffff;
+    }
+
+    .file-item {
+      display: inline-block;
+      text-align: center;
+      margin: 10px;
+    }
+
+    .file-item img {
+      width: 100px;
+      height: 100px;
+    }
+
+    .file-item p {
+      margin-top: 5px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 200px;
+      }
+      .main-content {
+        margin-left: 210px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .sidebar {
+        width: 150px;
+      }
+      .main-content {
+        margin-left: 160px;
+      }
+    }
+  </style>
+  <style>
+    .search-section {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+    }
+
+    .search-form {
+        display: flex;
+        width: 100%;
+        max-width: 600px;
+    }
+
+    .search-inputs {
+        display: flex;
+        width: 100%;
+    }
+
+    .search-bar {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px 0 0 4px;
+        font-size: 16px;
+    }
+
+    .search-button {
+        padding: 10px 20px;
+        border: none;
+        background-color: #007bff;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 0 4px 4px 0;
+    }
+
+    .search-button:hover {
+        background-color: #0056b3;
+    }
+</style>
+</head>
+
+
+<body>
+
+
+  <!-- Navbar -->
+
+
+  <!-- Main Content -->
+  <div class="main-content">
+    
+        <!-- Replace the search input in sub-navbar with: -->
+    <div class="search-section">
+        <form method="GET" action="{% url 'search' %}" class="search-form">
+            <div class="search-inputs">
+                <input type="text" name="q" id="searchInput" placeholder="Rechercher des fichiers..." 
+                             value="{{ request.GET.q }}" class="search-bar">
+                <button type="submit" class="search-button">Rechercher</button>
+            </div>
+        </form>
+    </div>
+
+    
+
+
+{% if query %}  {# N'afficher le tableau que si une recherche a été effectuée #}
+{% if documents.exists or dossiers.exists %}
+    <h1>Résultats de recherche</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Icône</th>
+                <th>Nom</th>
+                <th>Propriétaire</th>
+                <th>Date de Dernière Modification</th>
+                <th>Taille</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for dossier in dossiers %}
+        <tr>
+            <td>
+                <img class="folder-icon" src="{% static 'icons/folder.png' %}" alt="Dossier" />
+            </td>
+            <td>
+                <a href="{% url 'folder_documents' folder_id=dossier.id %}" class="folder-link">{{ dossier.nom }}</a>
+            </td>
+            <td>{{ dossier.utilisateur.username}}</td>
+            <td>{{ dossier.date_creation|date:"d M Y" }}</td>
+            <td>---</td> <!-- Cellule vide pour la taille des dossiers -->
+            <td>
+                <div class="action-menu">
+                    <button>⋮</button>
+                    <div class="dropdown-content">
+                        <a href="{% url 'upload_folder' folder_id=dossier.id %}">Télécharger un fichier</a>
+                        <a href="{% url 'rename_folder' folder_id=dossier.id %}">Renommer</a>
+                        <a href="{% url 'delete_folder' folder_id=dossier.id %}">Supprimer</a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">Aucun dossier trouvé.</td>
+        </tr>
+        {% endfor %}
+            
+        {% for document in documents %}
+        <tr class="document-card" data-type="{{ document.type_fichier }}">
+            <td>
+                {% if document.type_fichier == 'pdf' %}
+                    <img class="document-icon" src="{% static 'icons/pdf.png' %}" alt="{{ document.nom }}">
+                {% elif document.type_fichier == 'docx' %}
+                    <img class="document-icon" src="{% static 'icons/word.png' %}" alt="{{ document.nom }}">
+                {% elif document.type_fichier == 'xlsx' %}
+                    <img class="document-icon" src="{% static 'icons/excel.png' %}" alt="{{ document.nom }}">
+                {% elif document.type_fichier in 'jpg,png,gif,PNG' %}
+                    <img class="document-icon" src="{% static 'icons/image.png' %}" alt="{{ document.nom }}">
+                {% else %}
+                    <img class="document-icon" src="{% static 'icons/default.png' %}" alt="{{ document.nom }}"> <!-- Icône par défaut -->
+                {% endif %}
+            </td>
+            <td>{{ document.nom }}</td>
+            <td>{{ document.utilisateur.username }}</td> <!-- Remplacez 'username' par la propriété appropriée de l'utilisateur -->
+            <td>{{ document.date_ajout|date:"d M Y" }}</td>
+            <td>{{ document.taille_fichier_mo|floatformat:2 }} Ko</td> <!-- Affiche la taille en Mo avec deux décimales -->
+            <td>
+                <div class="action-menu">
+                    <button>⋮</button>
+                    <div class="dropdown-content">
+                        <a href="{% url 'rename_document' document_id=document.id %}">Renommer</a>
+                        <a href="{% url 'delete_document' document.id %}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce document ?');">Supprimer</a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">Aucun document trouvé.</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>Aucun résultat trouvé pour "{{ query }}"</p>
+{% endif %}
+{% else %}
+<div class="empty-state">
+    <p>Utilisez la barre de recherche ci-dessus pour trouver vos documents</p>
+</div>
+{% endif %}
+
+  
+
+
+  
+  
+    <!-- Ajouter d'autres fichiers ici -->
+</div>
+<style>
+  .document-icon {
+    width: 20px;  /* Ajustez la largeur selon vos besoins */
+    height: auto; /* Maintient le ratio d'aspect */
+}
+.folder-icon {
+  width: 20px;  /* Ajustez la largeur selon vos besoins */
+  height: auto; /* Maintient le ratio d'aspect */
+  margin-right: 5px; /* Espacement entre l'icône et le nom du dossier */
+  vertical-align: middle; /* Aligne l'icône avec le texte */
+}
+.folder-link {
+  text-decoration: none; /* Supprime le soulignement */
+  color: black; /* Change la couleur du texte, vous pouvez choisir la couleur que vous préférez */
+  font-weight: normal; /* Vous pouvez ajuster le poids de la police */
+}
+
+.folder-link:hover {
+  text-decoration: underline; /* Ajoute un soulignement au survol, si souhaité */
+  color: darkblue; /* Change la couleur au survol, si souhaité */
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.action-menu {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.action-menu:hover .dropdown-content {
+  display: block;
+}
+
+
+</style>
+<style>
+    .action-menu {
+      position: relative;
+      display: inline-block;
+  }
+  
+  .menu-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 20px; /* Taille du bouton */
+      padding: 0; /* Supprime le padding par défaut */
+  }
+  
+  .dropdown-content {
+      display: none; /* Masquer par défaut */
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+  }
+  
+  .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+  }
+  
+  .dropdown-content a:hover {
+      background-color: #f1f1f1;
+  }
+  
+  .action-menu:hover .dropdown-content {
+      display: block; /* Afficher le menu lorsque l'utilisateur survole le bouton */
+  }
+  
+</style>
+
+ 
+</body>
+</html>
+{% endblock %}
