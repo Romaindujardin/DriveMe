@@ -10,7 +10,6 @@
 <body>
     <button onclick="goBack()"> <--- </button>
     <h1>Documents Non Affiliés au Dossier "{{ dossier.nom }}"</h1>
-
     {% if documents %}
         <ul>
             {% for document in documents %}
@@ -29,6 +28,27 @@
     {% endif %}
 
     <a href="{% url 'create_folder' %}">Créer un dossier</a>
+
+
+
+    <div class="container mt-5">
+        <h2>Dossiers sans parent</h2>
+        <p>Voici les dossiers disponibles sans parent, à l'exception du dossier dans lequel vous êtes :</p>
+        
+        <ul class="list-group">
+            {% for dossier in dossiers_sans_parent %}
+                <li class="list-group-item">
+                    {{ dossier.nom }}
+                </li>
+            {% empty %}
+                <li class="list-group-item">Aucun dossier sans parent trouvé.</li>
+            {% endfor %}
+        </ul>
+        
+        <div class="mt-3">
+            <a href="{% url 'document_list' %}" class="btn btn-secondary">Retour à la liste des dossiers</a>
+        </div>
+    </div>
 
 
 <script>

@@ -164,6 +164,19 @@ def affilier_document(request, document_id):
     return redirect('upload_folder', folder_id=dossier_id)
 
 @login_required
+def afficher_dossiers_sans_parent(request, dossier_id1):
+    # Récupérer le dossier actuel (celui dans lequel on est)
+    dossier_actuel = get_object_or_404(Dossier, id=dossier_id1, utilisateur=request.user)
+
+    # Filtrer les dossiers qui n'ont pas de parent (dossier_id est NULL) et exclure le dossier actuel
+    dossiers_sans_parent = Dossier.objects.filter(utilisateur=request.user, dossier_id__isnull=True).exclude(id=dossier_id1)
+
+    # Passer ces dossiers au template pour affichage
+    return render(request, 'upload_folder.html', {'dossier_actuel': dossier_actuel, 'dossiers_sans_parent': dossiers_sans_parent})
+
+
+
+@login_required
 def folder_document_list(request, folder_id):
     dossier = get_object_or_404(Dossier, id=folder_id, utilisateur=request.user)  # Récupère le dossier
     documents = Document.objects.filter(dossier_id=dossier.id)  # Filtrer les documents par dossier
@@ -212,20 +225,18 @@ def upload_document(request):
     else:
         form = DocumentForm()
     return render(request, 'upload_document.html', {'form': form})
+
 @login_required
 def rename_document(request, document_id):
-    document = get_object_or_404(Document, id=document_id)
-    
+    document = get_object_or_404(Dossier, id=document_id, utilisateur=request.user)
     if request.method == 'POST':
-        form = DocumentForm(request.POST, instance=document)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Nom du document modifié avec succès.")
-            return redirect('document_list')  # Redirige vers la liste des documents
-    else:
-        form = DocumentForm(instance=document)
+        new_name = request.POST.get('nom')
+        document.nom = new_name
+        document.save()
+        return redirect('document_list')
+    return render(request, 'rename_document.html', {'document': document})
 
-    return render(request, 'rename_document.html', {'form': form})
+
 @login_required
 def delete_document(request, document_id):
     document = get_object_or_404(Document, id=document_id, utilisateur=request.user)

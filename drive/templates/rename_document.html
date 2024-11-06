@@ -1,19 +1,6 @@
-{% extends 'base.html' %}  <!-- Assurez-vous que le chemin de base.html est correct -->
-
-{% block content %}
-<div class="container">
-    <h2>Renommer le Document</h2>
-    
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="nom">Nouveau Nom du Document :</label>
-            <input type="text" class="form-control" id="nom" name="nom" value="{{ form.nom.value }}" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Renommer</button>
-        <a href="{% url 'document_list' %}" class="btn btn-secondary">Annuler</a>
-    </form>
-    
-
-</div>
-{% endblock %}
+<form method="POST">
+    {% csrf_token %}
+    <label for="nom">Nouveau nom :</label>
+    <input type="text" id="nom" name="nom" value="{{ document.nom }}" required>
+    <button type="submit">Renommer</button>
+</form>

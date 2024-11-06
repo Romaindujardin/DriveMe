@@ -13,7 +13,7 @@
     {% if documents %}
         <ul>
             {% for document in documents %}
-                <li>{{ document.nom }} - <a href="{% url 'download_file' document.id %}">Télécharger</a></li>
+                <li>{{ document.nom }} </li>
             {% endfor %}
         </ul>
     {% else %}

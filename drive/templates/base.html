@@ -345,11 +345,16 @@
           </a>
         </li>
         <li>
-          <div>
-            <p>Espace utilisé : {{ used_space|floatformat:1 }} / 100 Mo</p>
-            <!-- Le reste de votre code HTML pour afficher les dossiers et documents -->
+          <p></p>
+          
+        <div>
+          <div style="background-color: #ddd; border-radius: 5px; overflow: hidden; width: 150px">
+            <div style="width: {{ used_space|floatformat:1 }}%; background-color: rgb(64, 115, 255); height: 5px;"></div>
           </div>
-        </li>
+          <p>{{ used_space|floatformat:1 }}Mo utilisé</p>
+          <p>sur 100 Mo</p>
+        </div>
+      </li>
       </ul>
     </div>
     {% endif %}
