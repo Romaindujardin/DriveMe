@@ -200,6 +200,12 @@ def upload_document(request):
         if form.is_valid():
             document = form.save(commit=False)
             document.utilisateur = request.user  # Associe le document à l'utilisateur connecté
+            
+             # Vérifier la taille du fichier (40 Mo = 40 * 1024 * 1024 octets)
+            if document.fichier.size > 40 * 1024 * 1024:
+                messages.error(request, "Le fichier est trop volumineux (limite : 40 Mo).")
+                return render(request, 'upload_document.html', {'form': form})
+            
             document.taille_fichier = document.fichier.size
             document.type_fichier = document.fichier.name.split('.')[-1]  # Extension de fichier
 
