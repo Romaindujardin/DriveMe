@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% load static %} {% block content %}
+{% extends 'base.html' %} {% load static %} {% block content %}{% load social_django %}
 <!DOCTYPE html>
 <html lang="fr">
   <head>
@@ -115,7 +115,7 @@
           />
           <button type="submit">Se connecter</button>
         </form>
-        <a class="btn btn-google"> Se connecter avec Google </a>
+        <a class="btn-google" href="{% provider_login_url 'google' %}">Se connecter avec Google</a>
       </div>
     </div>
   </body>

@@ -3,8 +3,8 @@ from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 from .views import create_folder, delete_folder, rename_folder, upload_folder, affilier_document
-from .views import folder_document_list, download_file, folder_list, rename_document, delete_document ,stats
-
+from .views import folder_document_list, download_file, folder_list, rename_document, delete_document, stats
+from django.urls import path, include
 urlpatterns = [
     path('', views.home_view, name='home'),  # URL racine redirige vers la page 'home'
     path('login/', views.login_view, name='login'),
@@ -28,6 +28,7 @@ urlpatterns = [
     path('documents/rename/<int:document_id>/', rename_document, name='rename_document'), 
     path('documents/delete/<int:document_id>/', delete_document, name='delete_document'),
     path('stats/',views.stats, name='stats'),#La vue des statistiques
+    path('accounts/', include('allauth.urls')),  # Ajouter cette ligne
 ]
 
 if settings.DEBUG:

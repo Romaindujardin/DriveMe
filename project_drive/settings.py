@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     'drive',
+    'django.contrib.sites',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',  # Ajoute ton app ici
@@ -140,3 +141,13 @@ LOGIN_URL = '/login/'  # Assure-toi que ce chemin correspond à ta vue de connex
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# URL de redirection après une connexion réussie
+LOGIN_REDIRECT_URL = 'document_list'  # Remplacez par la vue de votre choix
+
+# Activez l'authentification avec Google
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '<votre-client-id-google>'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '<votre-client-secret-google>'
+
+# Configuration pour les e-mails de confirmation (optionnel)
+ACCOUNT_EMAIL_VERIFICATION = "none"  # ou "mandatory" pour forcer la vérification de l'email
+ACCOUNT_AUTHENTICATED_REDIRECTS = True  # Rediriger vers la page d'accueil après la connexion

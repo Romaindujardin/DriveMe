@@ -49,9 +49,9 @@
       <h2>Ajouter un document</h2>
       <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <div class="form-group">{{ form.as_p }}</div>
-        <button type="submit">Rechercher et ajouter</button>
-      </form>
+        {{ form.as_p }}
+        <button type="submit">Ajouter</button>
+    </form>
     </div>
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
   </body>
