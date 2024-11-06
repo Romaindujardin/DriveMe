@@ -28,6 +28,7 @@ urlpatterns = [
     path('documents/rename/<int:document_id>/', rename_document, name='rename_document'), 
     path('documents/delete/<int:document_id>/', delete_document, name='delete_document'),
     path('stats/',views.stats, name='stats'),#La vue des statistiques
+    path('view/<int:document_id>/', views.view_document, name='view_document'),
 ]
 
 if settings.DEBUG:
