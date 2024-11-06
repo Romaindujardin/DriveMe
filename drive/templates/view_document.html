@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue du document</title>
+</head>
+<body>
+
+    <h1>Prévisualisation du document : {{ document.nom }}</h1>
+
+    {% if file_url %}
+        <h2>Aperçu du document :</h2>
+        <!-- Affichage de l'image pour les fichiers image ou PDF converti -->
+        <img src="{{ file_url }}" alt="Aperçu du document" />
+    {% else %}
+        <p>Aucune prévisualisation disponible.</p>
+    {% endif %}
+
+</body>
+</html>

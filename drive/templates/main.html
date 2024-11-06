@@ -218,9 +218,28 @@
           <td>{{ document.date_ajout|date:"d M Y" }}</td>
           <td>{{ document.taille_fichier_mo|floatformat:2 }} Ko</td> <!-- Affiche la taille en Mo avec deux décimales -->
           <td>
+            <a href="{% url 'view_document' document_id=document.id %}">Voir</a>
+        </td>
+          <td>
+            {% if document.fichier %}
+            <a href="{{ document.fichier.url }}" onclick="openPopup(this.href); return false;">
+              Prévisualiser
+            </a>
+          {% else %}
+            <span>Aucun fichier</span>
+          {% endif %}
+          <td>
               <div class="action-menu">
                   <button>⋮</button>
                   <div class="dropdown-content">
+                    {% if document.fichier %}
+                    <a href="{{ document.fichier.url }}" target="_blank" onclick="previewDocument('{{ document.id }}'); return false;">
+                      Prévisualiser
+                    </a>
+                  {% else %}
+                    <span>Aucun fichier</span>
+                  {% endif %}
+                  <button onclick="openPreview({{ document.id }})">Prévisualiser22</button>
                       <a href="{% url 'rename_document' document_id=document.id %}">Renommer</a>
                       <a href="{% url 'delete_document' document.id %}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce document ?');">Supprimer</a>
                   </div>
@@ -234,7 +253,11 @@
       {% endfor %}
   </tbody>
 </table>
-
+<script type="text/javascript">
+  function openPopup(url) {
+    window.open(url, 'popup', 'width=800,height=600');
+  }
+</script>
 
   <script>
     function filterDocuments(selectedType) {
@@ -417,27 +440,64 @@ th, td {
   
 </style>
 
+
+  <div id="preview-modal" style="display: none;">
+      <span onclick="closePreview()" style="cursor:pointer;">&times;</span>
+      <div id="preview-content"></div>
+  </div>
+  
+  </div>
+  
   <script>
-    // JavaScript pour afficher/masquer la modale
-    const openModalBtn = document.getElementById('openModalBtn');
-    const closeModalBtn = document.getElementById('closeModalBtn');
-    const fileModal = document.getElementById('fileModal');
-
-    openModalBtn.addEventListener('click', () => {
-        fileModal.style.display = 'flex';
-    });
-
-    closeModalBtn.addEventListener('click', () => {
-        fileModal.style.display = 'none';
-    });
-
-    // Ferme la modale si on clique en dehors
-    window.addEventListener('click', (event) => {
-        if (event.target == fileModal) {
-            fileModal.style.display = 'none';
-        }
-    });
+  function openPreview(documentId) {
+      fetch(`/preview_file/${documentId}/`)
+          .then(response => response.json())
+          .then(data => {
+              const modal = document.getElementById('preview-modal');
+              const content = document.getElementById('preview-content');
+              
+              if (data.preview_url) {
+                  if (data.preview_url.endsWith('.pdf')) {
+                      content.innerHTML = `<embed src="${data.preview_url}" type="application/pdf" width="100%" height="600px">`;
+                  } else {
+                      content.innerHTML = `<img src="${data.preview_url}" style="width:100%;">`;
+                  }
+                  modal.style.display = 'block';
+              } else {
+                  alert("Prévisualisation non disponible.");
+              }
+          })
+          .catch(error => console.error("Erreur:", error));
+  }
+  
+  function closePreview() {
+      document.getElementById('preview-modal').style.display = 'none';
+  }
   </script>
-</body>
-</html>
-{% endblock %}
+  <style>
+    #preview-modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.8);
+      padding-top: 60px;
+  }
+  
+  #preview-content {
+      margin: auto;
+      display: block;
+      width: 80%;
+      max-width: 700px;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+  }
+  </style>
+  </body>
+  </html>
+  {% endblock %}

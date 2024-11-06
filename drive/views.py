@@ -6,14 +6,17 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from .forms import DocumentForm
 from django.db.models import Q
+from django.http import FileResponse, Http404
 from django.db import IntegrityError
 from django.http import HttpResponse
 from django.http import FileResponse
-from django.http import HttpResponse
+from django.http import HttpResponse 
 from .models import Dossier, Document
 from django.core.exceptions import ValidationError
 from django.contrib import messages
 import os
+from django.conf import settings
+from django.http import JsonResponse
 from django.db.models import Sum
 from django.conf import settings
 import matplotlib.pyplot as plt
@@ -367,3 +370,5 @@ def search_documents(request):
     context['used_space'] = used_space
     return render(request, 'search.html', context)
 
+
+  
