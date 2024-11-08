@@ -199,7 +199,7 @@
       {% endfor %}
 
       {% for document in documents %}
-      <tr class="document-card" data-type="{{ document.type_fichier }}">
+      <tr class="document-card" data-type="{{ document.type_fichier }}" data-url="{{document.fichier.url}}">
           <td>
               {% if document.type_fichier == 'pdf' %}
                   <img class="document-icon" src="{% static 'icons/pdf.png' %}" alt="{{ document.nom }}">
@@ -208,7 +208,7 @@
               {% elif document.type_fichier == 'xlsx' %}
                   <img class="document-icon" src="{% static 'icons/excel.png' %}" alt="{{ document.nom }}">
               {% elif document.type_fichier in 'jpg,png,gif,PNG,jpeg' %}
-                  <img class="document-icon" src="{% static 'icons/image.png' %}" alt="{{ document.nom }}">
+                  <img class="document-icon" src="{{document.fichier.url}}" alt="{{ document.nom }}" style="width: 60px; height: auto;">
               {% else %}
                   <img class="document-icon" src="{% static 'icons/default.png' %}" alt="{{ document.nom }}"> <!-- Icône par défaut -->
               {% endif %}
@@ -221,10 +221,8 @@
               <div class="action-menu">
                   <button>⋮</button>
                   <div class="dropdown-content">
-                    {% if document.fichier %}
-                    <a href="{{ document.fichier.url }}" onclick="openPopup(this.href); return false;">
-                      ouvrir
-                    </a>
+                  {% if document.fichier %}
+                    <a href="#" onclick="openPopup()">Ouvrir</a>
                   {% else %}
                     <span>Aucun fichier</span>
                   {% endif %}
@@ -242,6 +240,82 @@
   </tbody>
 </table>
 
+
+  <!-- On crée la section pour le pop up d'affichage des éléments -->
+<div id="pop-up" class="pop-up-overlay">
+  <div class="pop-up-content">
+    <span class="close" onclick="closePopup()">&times;</span>
+    <p>Voici votre document:</p>
+    <!-- <img src="{% static 'icons/pdf.png' %}" alt="Document" style="display: inline-block;">
+    <img src="{% static 'icons/word.png' %}" alt="Document" style="display: inline-block;"> -->
+    <img id ="image-preview" src="#" alt="Preview" style="display: block; width: 100%; height: 90%;">
+  </div>
+</div>
+
+
+
+  <style>
+    /* Styles du pop-up */
+    .pop-up-overlay {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .pop-up-content {
+        background-color: #fefefe;
+        margin: 10% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 800px;
+        position: relative;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+  </style>
+
+
+<script>
+  function openPopup(){
+    //Récupere le pop-up
+    var popup = document.getElementById("pop-up");
+    //Récupère l'image a afficher
+    var image_preview = document.getElementById("image-preview");
+    //Récupere tous les éléments de documet
+    const doc_list = document.querySelectorAll('.document-card');
+    //Récuperer l'url de l'image
+    var url = document.querySelector(".document-card").getAttribute("data-url");
+    //Afficher le pop-up
+    popup.style.display="flex";
+    //Afficher l'image
+    image_preview.src = url;
+  }
+
+  function closePopup(){
+    var popup = document.getElementById("pop-up");
+    popup.style.display="none";
+  } 
+</script>
+<!--FIN SECTION POP UP-->
 
   <script>
     function filterDocuments(selectedType) {
