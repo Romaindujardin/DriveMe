@@ -140,3 +140,4 @@ LOGIN_URL = '/login/'  # Assure-toi que ce chemin correspond à ta vue de connex
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+X_FRAME_OPTIONS = 'ALLOWALL'  # Permet à tous les sites d'intégrer votre site dans un iframe

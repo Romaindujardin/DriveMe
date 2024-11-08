@@ -13,8 +13,7 @@ import base64
 from django.db.models import Q
 from django.db import IntegrityError
 from django.http import HttpResponse
-from django.http import FileResponse
-from django.http import HttpResponse
+from django.http import FileResponse, JsonResponse
 from .models import Dossier, Document
 from django.core.exceptions import ValidationError
 from django.contrib import messages
@@ -25,6 +24,7 @@ import matplotlib.pyplot as plt
 import io
 import base64
 import matplotlib
+
 matplotlib.use('Agg')  # Utiliser le backend non interactif pour matplotlib
 def logout_view(request):
     logout(request)  # Déconnecte l'utilisateur
@@ -73,21 +73,21 @@ def signin_view(request):
 def home_view(request):
     return render(request, 'home.html')
 
-def upload_file(request): #NE MARCHE PAS 
-    if request.method == 'POST':
-        title = request.POST.get('title')
-        file = request.FILES.get('file')
+# def upload_file(request): #NE MARCHE PAS 
+#     if request.method == 'POST':
+#         title = request.POST.get('title')
+#         file = request.FILES.get('file')
 
-        print("Titre du document:", title)
-        print("Fichier reçu:", file)
+#         print("Titre du document:", title)
+#         print("Fichier reçu:", file)
 
-        if title and file:
-            document = Document(title=title, file=file)
-            document.save()
-            print("Document enregistré avec succès !")
-        else:
-            print("Les données sont manquantes ou incorrectes.")
-    return render(request, 'add_document.html')
+#         if title and file:
+#             document = Document(title=title, file=file)
+#             document.save()
+#             print("Document enregistré avec succès !")
+#         else:
+#             print("Les données sont manquantes ou incorrectes.")
+#     return render(request, 'add_document.html')
 
 @login_required  # Appliquer le décorateur ici
 def main_view(request):
@@ -112,11 +112,13 @@ def document_list(request):
     # Convertir la taille des documents en Mo
     for document in documents:
         document.taille_fichier_mo = document.taille_fichier / 1024  # Conversion de Ko à Mo
+        document.url = document.fichier.url if document.fichier else None  # Ajouter l'URL du fichier si disponible
 
     return render(request, 'main.html', {
         'dossiers': dossiers,
         'documents': documents,
         'used_space': used_space
+        
     })
 
 
@@ -203,6 +205,11 @@ def upload_document(request):
     if request.method == 'POST':
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
+            fichier = request.FILES.get('fichier')  # Assure-toi que le champ 'fichier' existe bien dans le formulaire
+            if not fichier:
+                form.add_error('fichier', 'Aucun fichier téléchargé')  # Ajoute une erreur si aucun fichier n'est attaché
+                return render(request, 'upload_document.html', {'form': form})
+
             document = form.save(commit=False)
             document.utilisateur = request.user  # Associe le document à l'utilisateur connecté
             document.taille_fichier = document.fichier.size
@@ -217,6 +224,7 @@ def upload_document(request):
 
             # Enregistrer le fichier dans le dossier de l'utilisateur
             document.fichier.name = os.path.join(request.user.username, document.fichier.name)
+            
             document.save()
 
             return redirect('document_list')  # Redirige vers une vue listant les documents
@@ -374,4 +382,55 @@ def search_documents(request):
     
     context['used_space'] = used_space
     return render(request, 'search.html', context)
+
+
+#option pour rajouter un dossier aux favoris
+@login_required
+def add_favorite_folder(request, folder_id):
+    document = get_object_or_404(Dossier, id=folder_id)
+    document.is_favorite = True  # Change en 'False' si on souhaite retirer des favoris
+    document.save()
+    #retourne sur la page qu'il etait avant d'appuyer
+    return redirect(request.META.get('HTTP_REFERER'))
+#option pour rajouter un document aux favoris
+@login_required
+def add_favorite_file(request, document_id):
+    document = get_object_or_404(Document, id=document_id)
+    document.is_favorite = True  # Marque comme favori
+    document.save()
+    return redirect(request.META.get('HTTP_REFERER'))
+
+
+#option pour retirer un dossier des favoris
+@login_required
+def remove_favorite_folder(request, folder_id):
+    document = get_object_or_404(Dossier, id=folder_id)
+    document.is_favorite = False
+    document.save()
+    return redirect(request.META.get('HTTP_REFERER'))
+#option pour retirer un document des favoris
+@login_required
+def remove_favorite_file(request, document_id):
+    document = get_object_or_404(Document, id=document_id)
+    document.is_favorite = False  # Retirer des favoris
+    document.save()
+    return redirect(request.META.get('HTTP_REFERER'))
+
+
+#favoris
+@login_required
+def favorites(request):
+    # Récupérer les dossiers favoris
+    dossiers = Dossier.objects.filter(is_favorite=True, utilisateur=request.user)
+    # Récupérer les documents favoris
+    documents = Document.objects.filter(is_favorite=True, utilisateur=request.user)
+    # Vérifier si l'utilisateur a des favoris
+    has_favorites = any(dossier.is_favorite for dossier in dossiers) or any(document.is_favorite for document in documents)
+    context = {
+        'dossiers': dossiers,
+        'documents': documents,
+        'has_favorites': has_favorites,
+    }
+    return render(request, 'favorites.html', context)
+
 
