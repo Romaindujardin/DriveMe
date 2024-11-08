@@ -29,6 +29,13 @@ urlpatterns = [
     path('documents/delete/<int:document_id>/', delete_document, name='delete_document'),
     path('stats/',views.stats, name='stats'),#La vue des statistiques
     path('view/<int:document_id>/', views.view_document, name='view_document'),
+    # Favoris
+    path('favorites/', views.favorites, name='favorites'),
+    # Ajouter ou retirer un dossier ou un fichier des favoris
+    path('folder/<int:folder_id>/add_favorite_folder/', views.add_favorite_folder, name='add_favorite_folder'),
+    path('folder/<int:folder_id>/remove_favorite_folder/', views.remove_favorite_folder, name='remove_favorite_folder'),
+    path('document/<int:document_id>/add_favorite_file/', views.add_favorite_file, name='add_favorite_file'),
+    path('document/<int:document_id>/remove_favorite_file/', views.remove_favorite_file, name='remove_favorite_file'),
 ]
 
 if settings.DEBUG:

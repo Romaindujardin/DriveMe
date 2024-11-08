@@ -1,0 +1,30 @@
+Shift + A --> crée un objet
+A --> tout selectionner
+Tab --> changer de mode
+X --> supprimer un objet
+G --> déplacer l'objet ; puis X,Y ou Z pour déplacer sur l'axe ; et un nombre si on veux le déplacer précisement
+S --> agrandir ou rétrécir l'objet
+R --> rotation
+Z + 4 --> vision squelette
+Z + 6 --> vision de base
+Z + 2 --> vision avec les textures différentes	
+Shift --> sélectionner plusieurs objet
+Alt + click gauche --> sélection d'une ranger
+E --> extruder
+pendant l'extrusion Ctrl --> extruder metre par metre
+Ctrl + B --> arrondir les bords 
+W --> diviser les fâces
+Ctrl + I --> selection inverse (sélectionne toutes les entités qui n'était pas sélectionner)
+Ctrl + R --> divise en plusieurs parti un objet (premier click droit pour diviser et click gauche pour remettre au centre)
+Ctrl + C --> sélectionne avec la molette une zone ; et C + click molette déselectionne tout dans la zone
+F --> créer une face grace au coté d'autre face
+M --> rassemble deux point en un 
+H --> cacher des faces
+L --> sélectionne le reste des face collé 
+F12 --> rendu en couleur
+F2 --> renomer
+Shift + D --> dupliquer
+Alt + click droit --> selectionne la ranger de point
+Shift + R --> repete la derniere action
+
+Armature: si on veut mettre plusieur armature a la suite on l'agrandi la longueure qu'on a besoin et on le subdivise (ex : si on subdivise 39 fois on a 40 armature)
