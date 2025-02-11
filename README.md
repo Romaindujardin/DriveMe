@@ -12,7 +12,7 @@ DriveMe est un projet étudiant en python, visant à mettre en place un outil de
 - **Favoris :** possibilité de marquer vos fichiers préférés.
 - **Organisation :** création de dossiers pour structurer vos fichiers.
 - **Gestion du stockage :** outils de suivi et de visualisation de l'espace de stockage.
-- - **Fonctionnalité de bases :** Supprimer, télécharger, déplacer, renommer.
+- **Fonctionnalité de bases :** Supprimer, télécharger, déplacer, renommer.
 
 
 
