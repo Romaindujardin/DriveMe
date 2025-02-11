@@ -5,15 +5,19 @@ DriveMe est un projet étudiant en python, visant à mettre en place un outil de
 ![DriveMe](https://github.com/user-attachments/assets/f53269a5-1ca4-4df1-9f50-21992722a0a3)
 
 ## Quelques caratéristique intéressantes
-Inscription / Connexion et gestion de compte
+- Inscription / Connexion et gestion de compte et Connexion avec GOOGLE
 
-Upload de fichier de tout type (pdf, jpeg, png, docx...)
+- Upload de fichier de tout type (pdf, jpeg, png, docx...)
 
-Visualisation du document dans le cloud
+- Visualisation du document dans le cloud
 
-Systeme de recherche de fichier
+- Systeme de recherche de fichier
 
-Systeme de favoris de fichier
+- Systeme de favoris de fichier
+
+- Creation de dossier pour l'organisation
+
+- Outil pour la gestion et visualisation du stockage
 
 
 
