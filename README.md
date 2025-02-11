@@ -15,7 +15,7 @@ DriveMe est un projet étudiant en python, visant à mettre en place un outil de
 - **Fonctionnalité de bases :** Supprimer, télécharger, déplacer, renommer.
 
 ## Utilisation
-Documentation pour l'utilisation ici : https://github.com/Romaindujardin/DriveMe/blob/94007031525c5a9e59451e73f4382143ec5be4c3/Tuto%20SETUP.md
+Documentation pour l'utilisation ici : Tuto SETUP.md
 
 
 
