@@ -1,7 +1,3 @@
-# DriveMe
-
-## Projet de gestionaire de fichier dans le cloud
-
 ### -> Comment exécuter le projet :
 
 ### Cloner le dépôt :
